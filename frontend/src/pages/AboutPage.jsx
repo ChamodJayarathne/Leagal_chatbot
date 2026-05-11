@@ -154,7 +154,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Disclaimer */}
+      {/* Disclaimer
       <section className="py-16 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="glass-card p-8 border-gold-500/20">
@@ -169,7 +169,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA */}
       <section className="py-16 px-6">
