@@ -4,6 +4,7 @@ Handles FAISS vector search and Sentence-BERT encoding.
 """
 import json
 import os
+# pyrefly: ignore [missing-import]
 import numpy as np
 
 
@@ -19,7 +20,9 @@ class SearchService:
     
     def load(self):
         """Load FAISS index, chunks, and SBERT model."""
+        # pyrefly: ignore [missing-import]
         import faiss
+        # pyrefly: ignore [missing-import]
         from sentence_transformers import SentenceTransformer
         
         # Load FAISS index
@@ -31,13 +34,13 @@ class SearchService:
             )
         
         self.index = faiss.read_index(index_path)
-        print(f"  ✓ FAISS index loaded: {self.index.ntotal} vectors")
+        print(f"  [OK] FAISS index loaded: {self.index.ntotal} vectors")
         
         # Load chunk mapping
         mapping_path = os.path.join(self.embeddings_dir, "chunk_mapping.json")
         with open(mapping_path, "r", encoding="utf-8") as f:
             self.chunk_mapping = json.load(f)
-        print(f"  ✓ Chunk mapping loaded: {len(self.chunk_mapping)} entries")
+        print(f"  [OK] Chunk mapping loaded: {len(self.chunk_mapping)} entries")
         
         # Load chunks
         chunks_path = os.path.join(self.processed_dir, "chunks.json")
@@ -45,12 +48,12 @@ class SearchService:
             chunks_list = json.load(f)
         # Create lookup by ID
         self.chunks = {chunk["id"]: chunk for chunk in chunks_list}
-        print(f"  ✓ Chunks loaded: {len(self.chunks)} documents")
+        print(f"  [OK] Chunks loaded: {len(self.chunks)} documents")
         
         # Load SBERT model
         print(f"  Loading SBERT model: {self.model_name}")
         self.model = SentenceTransformer(self.model_name)
-        print(f"  ✓ SBERT model loaded")
+        print(f"  [OK] SBERT model loaded")
     
     def search(self, query: str, top_k: int = 5, language_filter: str = None):
         """

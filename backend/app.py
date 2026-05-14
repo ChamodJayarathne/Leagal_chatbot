@@ -1,7 +1,9 @@
 """
 Justice Chatbot Backend - Main FastAPI Application
 """
+# pyrefly: ignore [missing-import]
 from fastapi import FastAPI
+# pyrefly: ignore [missing-import]
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
@@ -28,7 +30,7 @@ async def lifespan(app: FastAPI):
     """Load AI models and FAISS index on startup."""
     global search_service, language_service, response_service
     
-    print("🔄 Loading AI models and FAISS index...")
+    print("[*] Loading AI models and FAISS index...")
     
     base_dir = os.path.dirname(os.path.dirname(__file__))
     embeddings_dir = os.path.join(base_dir, "data", "embeddings")
@@ -45,11 +47,11 @@ async def lifespan(app: FastAPI):
     app.state.language_service = language_service
     app.state.response_service = response_service
     
-    print("✅ All services loaded and ready!")
+    print("[OK] All services loaded and ready!")
     
     yield
     
-    print("👋 Shutting down...")
+    print("[..] Shutting down...")
 
 
 # Create FastAPI app
