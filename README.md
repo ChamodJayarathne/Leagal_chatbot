@@ -119,10 +119,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## ⚖️ Disclaimer
 
-*Justice Chatbot provides information for educational purposes only and does not constitute professional legal advice. Users should consult with qualified legal professionals for specific legal matters.*
-
----
 
 © 2026 Justice Chatbot Team. Developed with ❤️ for Sri Lanka.
