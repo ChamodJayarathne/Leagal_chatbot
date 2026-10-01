@@ -927,7 +927,7 @@ body {
 .form-label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; }
 .form-label .req { color: #ef4444; }
 
-.form-input, .form-textarea {
+.form-input, .form-textarea, .form-select {
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -935,8 +935,119 @@ body {
   color: #f1f5f9;
   font-size: 0.9rem;
   outline: none;
+  font-family: inherit;
 }
-.form-input:focus, .form-textarea:focus { border-color: var(--accent-teal); }
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent-teal); }
+
+.template-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.nic-feedback-badge {
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+.nic-feedback-badge.valid {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.nic-feedback-badge.invalid {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.doc-toast {
+  max-width: 1200px;
+  margin: 0 auto 20px auto;
+  padding: 12px 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  animation: slideDownToast 0.3s ease;
+}
+@keyframes slideDownToast {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.doc-toast.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.doc-toast.info {
+  background: rgba(14, 165, 233, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+.doc-toast.error {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Spinner for Save to DB button */
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin-icon {
+  animation: spinIcon 0.8s linear infinite;
+  display: inline-block;
+}
+
+.doc-lang-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.doc-lang-pill {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+.doc-lang-pill:hover {
+  border-color: var(--accent-gold);
+  color: #f1f5f9;
+}
+.doc-lang-pill.active {
+  background: var(--gradient-gold);
+  color: #0f172a;
+  border-color: transparent;
+}
 
 .preview-card {
   background: var(--bg-card);
@@ -957,9 +1068,66 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.preview-actions { display: flex; gap: 8px; }
+.preview-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-badge-status {
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.preview-badge-status.editing {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.preview-badge-status.edited {
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.btn-danger:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+.btn-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.btn-success:hover {
+  background: #10b981;
+  color: #ffffff;
+}
+
 .preview-content { padding: 20px; }
 
 .document-paper {
@@ -973,6 +1141,168 @@ body {
   color: #e2e8f0;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+/* Edit Mode Styles */
+.edit-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-toolbar-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(13, 148, 136, 0.12);
+  border: 1px solid rgba(13, 148, 136, 0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.edit-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+.edit-preview-textarea {
+  width: 100%;
+  min-height: 480px;
+  background: #060a14;
+  border: 1px solid var(--accent-teal);
+  box-shadow: 0 0 16px rgba(13, 148, 136, 0.15);
+  border-radius: 10px;
+  padding: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #f8fafc;
+  resize: vertical;
+  outline: none;
+}
+.edit-preview-textarea:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Legal Verification Card */
+.legal-verification-card {
+  margin-top: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.verification-header {
+  padding: 12px 18px;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.verification-header:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.verification-content {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.82rem;
+}
+
+.verification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+.verification-item.valid svg {
+  color: #10b981;
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.verification-item.note svg {
+  color: #f59e0b;
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Delete Confirmation Modal */
+.delete-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.delete-modal-card {
+  background: #0f172a;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 16px;
+  padding: 26px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  animation: modalScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.delete-modal-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+}
+
+.delete-modal-card h3 {
+  font-size: 1.15rem;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.delete-modal-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 /* Lawyer Directory Page */
@@ -2143,3 +2473,861 @@ h1,h2,h3,h4,h5,h6 { font-family: 'Outfit', 'Inter', sans-serif; font-weight: 700
 }
 
 
+/* ============================================================
+   SCENARIO-BASED LEGAL SEARCH — Styles
+   Rights & Laws Hub scenario analysis feature
+   ============================================================ */
+
+/* ── Scenario Search Section ───────────────────────────────── */
+.scenario-search-section {
+  background: linear-gradient(135deg, rgba(245,158,11,0.07), rgba(20,184,166,0.06));
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: var(--border-radius-xl);
+  padding: 28px 32px 24px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.scenario-search-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, rgba(245,158,11,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.scenario-search-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.scenario-search-icon {
+  font-size: 1.8rem;
+  color: var(--accent-gold);
+  margin-top: 3px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px rgba(245,158,11,0.4));
+}
+
+.scenario-search-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.scenario-search-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Form ─────────────────────────────────────────────────── */
+.scenario-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.scenario-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  background: var(--bg-input);
+  border: 1.5px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--border-radius-md);
+  padding: 12px 44px 12px 42px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.scenario-input-wrapper:focus-within {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+.scenario-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 15px;
+  color: var(--accent-gold);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.scenario-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: none;
+  width: 100%;
+}
+
+.scenario-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.scenario-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.scenario-clear-btn:hover {
+  color: var(--danger);
+}
+
+.scenario-submit-btn {
+  flex-shrink: 0;
+  height: 52px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.scenario-submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Sample Scenario Chips ────────────────────────────────── */
+.scenario-chips-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.scenario-chips-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  padding-top: 5px;
+}
+
+.scenario-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.scenario-chip {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.scenario-chip:hover {
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: var(--accent-gold-light);
+}
+
+/* ── Loading Panel ────────────────────────────────────────── */
+.scenario-loading-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--border-radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+
+.scenario-loading-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.scenario-loading-icon {
+  font-size: 2rem;
+  color: var(--accent-gold);
+}
+
+.scenario-loading-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.scenario-loading-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.skeleton-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(148,163,184,0.08) 25%, rgba(148,163,184,0.18) 50%, rgba(148,163,184,0.08) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-bar.w80 { width: 80%; }
+.skeleton-bar.w60 { width: 60%; }
+.skeleton-bar.w90 { width: 90%; }
+.skeleton-bar.w50 { width: 50%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Spin animation ──────────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1.6s linear infinite;
+}
+
+.spinner-sm {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Error Message ────────────────────────────────────────── */
+.scenario-error-msg {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--border-radius-md);
+  padding: 14px 18px;
+  color: #fca5a5;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ── Scenario Result Panel ────────────────────────────────── */
+.scenario-result-panel {
+  background: linear-gradient(135deg, rgba(30,41,59,0.95), rgba(15,23,42,0.9));
+  border: 1.5px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--border-radius-xl);
+  margin-bottom: 28px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,158,11,0.1);
+  animation: slideUp 0.35s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.scenario-result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.scenario-result-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.scenario-result-gavel {
+  font-size: 1.6rem;
+  color: var(--accent-gold);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.scenario-result-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.scenario-result-query {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 540px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scenario-close-btn {
+  background: rgba(148,163,184,0.1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.scenario-close-btn:hover {
+  background: rgba(239,68,68,0.12);
+  border-color: rgba(239,68,68,0.3);
+  color: #fca5a5;
+}
+
+/* ── Analysis Body ────────────────────────────────────────── */
+.scenario-analysis-body {
+  padding: 24px 28px 28px;
+}
+
+.scenario-situation-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.scenario-urgency-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.scenario-situation-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Advice Box ───────────────────────────────────────────── */
+.scenario-advice-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(20, 184, 166, 0.08);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  border-radius: var(--border-radius-md);
+  padding: 16px 20px;
+  margin-bottom: 22px;
+}
+
+.scenario-advice-icon {
+  color: var(--accent-teal);
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.scenario-advice-box p {
+  color: var(--text-secondary);
+  font-size: 0.93rem;
+  line-height: 1.65;
+}
+
+/* ── Two Column Layout ────────────────────────────────────── */
+.scenario-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 680px) {
+  .scenario-two-col { grid-template-columns: 1fr; }
+}
+
+.scenario-steps-card,
+.scenario-hotlines-card {
+  background: var(--bg-glass-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 18px 20px;
+}
+
+.scenario-card-heading {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scenario-steps-list {
+  list-style: none;
+  counter-reset: steps;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scenario-steps-list li {
+  counter-increment: steps;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.scenario-steps-list li::before {
+  content: counter(steps);
+  background: var(--gradient-gold);
+  color: var(--text-inverse);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Hotlines ─────────────────────────────────────────────── */
+.scenario-hotlines-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scenario-hotlines-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.scenario-hotlines-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.hotline-name {
+  color: var(--text-secondary);
+}
+
+.hotline-number {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent-teal-light);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.hotline-number:hover {
+  color: var(--accent-gold);
+}
+
+/* ── Relevant Acts Row ────────────────────────────────────── */
+.scenario-acts-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.scenario-acts-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.scenario-act-chip {
+  background: rgba(20, 184, 166, 0.1);
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.77rem;
+  color: var(--accent-teal-light);
+}
+
+/* ── Detailed Laws & Citizen Rights Section ───────────── */
+.scenario-detailed-laws-section {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: var(--border-radius-lg);
+  padding: 22px 24px;
+  margin: 22px 0;
+}
+
+.scenario-detailed-laws-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detailed-laws-icon {
+  font-size: 1.45rem;
+  color: var(--accent-gold);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.detailed-laws-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.detailed-laws-subtitle {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.scenario-detailed-laws-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scenario-detailed-law-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-md);
+  padding: 20px 22px;
+  transition: all 0.25s ease;
+}
+
+.scenario-detailed-law-card:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.detailed-law-top {
+  margin-bottom: 14px;
+}
+
+.detailed-law-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.detailed-law-act-badge {
+  background: rgba(20, 184, 166, 0.14);
+  border: 1px solid rgba(20, 184, 166, 0.35);
+  color: var(--accent-teal-light);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 12px;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+}
+
+.detailed-law-section-badge {
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: var(--accent-gold-light);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 3px 12px;
+  border-radius: 6px;
+}
+
+.detailed-law-right-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.detailed-law-field-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
+
+.detailed-law-applies-block {
+  margin-bottom: 16px;
+}
+
+.detailed-law-applies-block p {
+  color: var(--text-secondary);
+  font-size: 0.91rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.detailed-law-remedy-box {
+  background: rgba(20, 184, 166, 0.08);
+  border-left: 3.5px solid var(--accent-teal);
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+
+.detailed-remedy-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-teal-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.detailed-law-remedy-box p {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.detailed-law-keypoints {
+  margin-top: 14px;
+}
+
+.detailed-keypoints-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 0;
+  margin: 0;
+}
+
+.detailed-keypoints-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.keypoint-check-icon {
+  color: var(--accent-teal);
+  font-size: 0.85rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Scenario Matched Section ─────────────────────────────── */
+.scenario-matched-section {
+  margin-top: 10px;
+}
+
+.scenario-matched-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scenario-matched-icon {
+  font-size: 1.35rem;
+  color: var(--accent-teal);
+  flex-shrink: 0;
+}
+
+.scenario-matched-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.scenario-matched-subtitle {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Ask AI Button ────────────────────────────────────────── */
+.scenario-ask-ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  padding: 12px 24px;
+}
+
+/* ── Mode Toggle ──────────────────────────────────────────── */
+.mode-toggle-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mode-toggle-btn {
+  background: var(--bg-glass-light);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.mode-toggle-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.mode-toggle-btn.active {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+/* ── Scenario Matched Card Enhancements ───────────────────── */
+.scenario-matched-card {
+  border-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.scenario-matched-card:hover {
+  border-color: rgba(245, 158, 11, 0.45) !important;
+}
+
+.rights-card-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+/* ── Relevance Badge ──────────────────────────────────────── */
+.relevance-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.2);
+}
+
+/* ── Matched Keyword Chips ────────────────────────────────── */
+.matched-keywords-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.matched-keyword-chip {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 10px;
+  padding: 2px 10px;
+  font-size: 0.72rem;
+  color: var(--accent-gold-light);
+  text-transform: lowercase;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .scenario-search-section { padding: 20px 18px 18px; }
+  .scenario-form            { flex-direction: column; }
+  .scenario-submit-btn      { width: 100%; justify-content: center; }
+  .scenario-result-header   { flex-direction: column; gap: 12px; }
+  .scenario-result-query    { white-space: normal; }
+  .scenario-analysis-body   { padding: 18px; }
+}

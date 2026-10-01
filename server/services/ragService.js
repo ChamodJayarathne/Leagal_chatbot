@@ -82,6 +82,54 @@ export const SRI_LANKAN_LEGAL_KNOWLEDGE = [
     section: 'Summary Procedure for Debt Recovery',
     content: 'Creditors and financial institutions can initiate summary court proceedings for liquidated financial debts (promissory notes, bounced cheques, loans) obtaining a decree nisi requiring defendant to show cause within a strict timeframe.',
     keywords: ['debt', 'cheque bounce', 'promissory note', 'money recovery', 'loan defaulter', 'court case']
+  },
+  {
+    id: 'consumer-protection',
+    act: 'Consumer Affairs Authority Act No. 9 of 2003',
+    section: 'Section 13 & 32 — Defective Goods, Warranties & Fair Trading',
+    title: 'Consumer Rights Against Defective Goods and Unfair Trade',
+    content: 'Traders cannot sell defective, substandard, or expired products. If a product fails or breaches warranty terms, consumers have the legal right to a refund, repair, or replacement. Overcharging above Maximum Retail Price (MRP) or misleading representation is an offence punishable under the CAA.',
+    keywords: ['consumer', 'shop', 'warranty', 'defective', 'refund', 'replacement', 'overcharge', 'mrp', 'expired', 'trader', 'faulty product', 'goods']
+  },
+  {
+    id: 'cyber-crimes',
+    act: 'Computer Crimes Act No. 24 of 2007',
+    section: 'Section 3, 4 & 6 — Hacking, Unauthorized Access & Cyber Harassment',
+    title: 'Protection Against Cyber Crimes, Hacking & Online Harassment',
+    content: 'Unauthorized access to computers, email, or social media accounts is a criminal offence under Section 3. Causing harm, blackmail, or non-consensual sharing of intimate images/messages is prosecutable under Computer Crimes Act and Penal Code §345 through the Police Cyber Crime Division (CID) and Sri Lanka CERT.',
+    keywords: ['cyber', 'hack', 'hacked', 'blackmail', 'online harassment', 'social media', 'facebook', 'whatsapp', 'leak', 'intimate photos', 'fake account', 'doxxing']
+  },
+  {
+    id: 'motor-traffic',
+    act: 'Motor Traffic Act (Cap. 203)',
+    section: 'Section 99 & 160 — Motor Accidents & Mandatory Third-Party Insurance',
+    title: 'Road Traffic Accidents, Hit-and-Run & Motor Insurance Claims',
+    content: 'Every motor vehicle must have valid third-party risk insurance. In the event of a traffic collision, drivers must stop, assist victims, and report the accident to the nearest police station within 24 hours. Victims have the legal right to claim compensation for bodily injury, vehicle damage, and loss of income.',
+    keywords: ['accident', 'car crash', 'motorcycle', 'hit and run', 'driver', 'insurance claim', 'compensation', 'drunk driving', 'negligence', 'vehicle collision']
+  },
+  {
+    id: 'right-to-information',
+    act: 'Right to Information (RTI) Act No. 12 of 2016',
+    section: 'Section 3 — Citizen Access to Public Information',
+    title: 'Right to Information from Public Authorities',
+    content: 'Every citizen has the legal right to request and receive official records, procurement documents, and decisions from government departments and statutory bodies within 14-21 working days. If refused, an appeal can be filed before the Designated Officer and the RTI Commission of Sri Lanka.',
+    keywords: ['rti', 'right to information', 'government office', 'public authority', 'ministry', 'tender', 'official documents', 'transparency', 'public officer']
+  },
+  {
+    id: 'companies-act',
+    act: 'Companies Act No. 7 of 2007',
+    section: 'Section 4, 15 & 51 — Incorporation, Shares & Governance',
+    title: 'Company Formation, Share Issuance & Corporate Law',
+    content: 'Governs registration of private and public limited companies in Sri Lanka (Form 1, 18, 19). Regulates share capital, rights of shareholders, director fiduciary obligations, annual returns to the Registrar General of Companies (ROC), and foreign investment clearances.',
+    keywords: ['company', 'incorporation', 'shares', 'shareholders', 'director', 'private limited', 'business registration', 'investor', 'corporate', 'roc']
+  },
+  {
+    id: 'land-disputes',
+    act: 'Partition Act No. 21 of 1977 & Common Law of Property',
+    section: 'Encroachment, Boundary Disputes & Declaration of Title',
+    title: 'Land Ownership, Encroachments & Boundary Demarcations',
+    content: 'Under Sri Lankan civil property law, land owners can file an action in the District Court for Declaration of Title, Ejectment of encroachers, and Injunction against unlawful building or boundary trespass. Partition actions resolve co-ownership disputes.',
+    keywords: ['land', 'boundary', 'encroach', 'encroachment', 'boundary wall', 'neighbor', 'property title', 'deed', 'surveyor', 'partition', 'trespass']
   }
 ];
 

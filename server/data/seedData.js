@@ -78,6 +78,121 @@ export const initialRightsData = [
         keyTakeaways: ['Urgent protection order', 'Excludes abuser from residence', 'Applies to spouse, cohabitants, family']
       }
     ]
+  },
+  {
+    title: 'Consumer Protection & Fair Trading Rights',
+    titleSi: 'පාරිභෝගික ආරක්ෂණය සහ සාධාරණ වෙළඳ අයිතිවාසිකම්',
+    titleTa: 'நுகர்வோர் பாதுகாப்பு மற்றும் நியாயமான வர்த்தக உரிமைகள்',
+    category: 'Consumer Rights',
+    summary: 'Statutory protections under the Consumer Affairs Authority Act against defective goods, false warranties, overcharging, and deceptive trade practices.',
+    summarySi: 'දෝෂ සහිත භාණ්ඩ, අසත්‍ය වගකීම් සහතික, වැඩි මිලට විකිණීම සහ වංචනික වෙළඳ භාවිතයන්ට එරෙහිව පාරිභෝගික කටයුතු අධිකාරී පනත යටතේ නීතිමය ආරක්ෂාව.',
+    summaryTa: 'குறைபாடுள்ள பொருட்கள், போலியான உத்தரவாதங்கள் மற்றும் அதிக விலைக்கு எதிரான நுகர்வோர் விவகாரங்கள் அதிகாரசபை சட்டத்தின் கீழான சட்டப் பாதுகாப்பு.',
+    sections: [
+      {
+        actOrArticle: 'Consumer Affairs Authority Act No. 9 of 2003',
+        heading: 'Defective Products & Mandatory Warranty Rights',
+        description: 'Traders are legally prohibited from selling substandard or expired goods. If an item is defective or does not match specifications, the consumer is entitled to repair, replacement, or full monetary refund.',
+        keyTakeaways: ['Right to repair, replacement or full refund', 'Statutory warranty cannot be disclaimed', 'Complaints filed with CAA within 30 days']
+      },
+      {
+        actOrArticle: 'Consumer Affairs Authority Act No. 9 of 2003',
+        heading: 'Protection Against Overcharging & Misleading Advertisements',
+        description: 'Selling above Maximum Retail Price (MRP) or making misleading claims regarding product origin or quality is a punishable criminal offence.',
+        keyTakeaways: ['Strict enforcement of Maximum Retail Price (MRP)', 'Protection against deceptive packaging and fake discounts', 'CAA Hotline 1977 for instant complaint registration']
+      }
+    ]
+  },
+  {
+    title: 'Cyber Crime, Online Harassment & Digital Privacy',
+    titleSi: 'සයිබර් අපරාධ, මාර්ගගත හිරිහැර සහ ඩිජිටල් පෞද්ගලිකත්වය',
+    titleTa: 'சைபர் குற்றங்கள், இணைய துன்புறுத்தல் மற்றும் டிஜிட்டல் தனியுரிமை',
+    category: 'Cyber & Digital Law',
+    summary: 'Legal remedies against account hacking, online blackmail, unauthorized image sharing, defamation, and financial phishing.',
+    summarySi: 'ගිණුම් අනවසරයෙන් විවෘත කිරීම (Hacking), මාර්ගගත බ්ලැක්මේල් කිරීම, ඡායාරූප අවභාවිතය සහ ඩිජිටල් වංචාවන්ට එරෙහි නීතිමය ක්‍රියාමාර්ග.',
+    summaryTa: 'கணக்கு ஊடுருவல், இணைய மிரட்டல் மற்றும் அங்கீகரிக்கப்படாத படப் பகிர்வுக்கு எதிரான சட்டப் பரிகாரங்கள்.',
+    sections: [
+      {
+        actOrArticle: 'Computer Crimes Act No. 24 of 2007',
+        heading: 'Unauthorized Access & System Hacking (Section 3 & 4)',
+        description: 'Accessing an email, social media, or banking system without authority carries heavy fines and up to 5 years imprisonment.',
+        keyTakeaways: ['Criminal offence to access accounts without consent', 'Report immediately to Sri Lanka CERT (101)', 'CID Cyber Crime Division handles forensic investigations']
+      },
+      {
+        actOrArticle: 'Penal Code of Sri Lanka & Computer Crimes Act',
+        heading: 'Online Blackmail, Extortion & Non-Consensual Image Sharing',
+        description: 'Using intimate photos, chats, or personal information to harass, extort money, or intimidate a person is a cognizable criminal offence.',
+        keyTakeaways: ['Magistrate Court can issue warrants and freeze accounts', 'Protection under Penal Code Section 345 & 372', 'Victims can request emergency content removal via CERT/CID']
+      }
+    ]
+  },
+  {
+    title: 'Road Traffic Accidents, Liability & Motor Insurance',
+    titleSi: 'රිය අනතුරු, වගකීම් සහ මෝටර් රථ රක්ෂණ අයිතිවාසිකම්',
+    titleTa: 'வீதி விபத்துக்கள், பொறுப்பு மற்றும் வாகன காப்பீட்டு உரிமைகள்',
+    category: 'Traffic & Accidents',
+    summary: 'Citizen rights regarding vehicle accidents, mandatory third-party insurance compensation, hit-and-run claims, and police reporting.',
+    summarySi: 'වාහන අනතුරු, තෙවන පාර්ශවීය රක්ෂණ වන්දි, පලාගිය රියදුරන්ට එරෙහි පියවර සහ පොලිස් වාර්තාකරණය පිළිබඳ පුරවැසි අයිතිවාසිකම්.',
+    summaryTa: 'வாகன விபத்துக்கள், கட்டாய மூன்றாம் தரப்பு காப்பீட்டு இழப்பீடு மற்றும் பொலிஸ் முறைப்பாடுகள் தொடர்பான குடிமக்கள் உரிமைகள்.',
+    sections: [
+      {
+        actOrArticle: 'Motor Traffic Act (Cap. 203) Section 99 & 160',
+        heading: 'Accident Duties & Third-Party Compensation',
+        description: 'Drivers involved in a collision must stop, provide assistance, and notify police within 24 hours. Injured pedestrians or passengers can claim hospital expenses and loss of earnings from insurance.',
+        keyTakeaways: ['Mandatory reporting to nearest police within 24 hours', 'Right to recover medical expenses from Third-Party Insurer', 'Right to claim delictual damages in District Court']
+      },
+      {
+        actOrArticle: 'Motor Traffic Act & Insurance Board Regulations',
+        heading: 'Hit-and-Run Compensation & Compensation Strike Fund',
+        description: 'If the offending vehicle is unidentified or uninsured, victims can claim statutory relief from the Ministry of Transport Strike Fund.',
+        keyTakeaways: ['Relief fund available when driver is untraceable', 'Police B-Report is required as primary evidence', 'Statutory limitation of 2 years to file civil action for damages']
+      }
+    ]
+  },
+  {
+    title: 'Protection Against Financial Scams, Fraud & Cheating',
+    titleSi: 'මූල්‍ය වංචා, කූට ක්‍රියා සහ රැවටීම් වලින් ආරක්ෂාවීම',
+    titleTa: 'நிதி மோசடிகள் மற்றும் ஏமாற்றல்களுக்கு எதிரான பாதுகாப்பு',
+    category: 'Criminal & Fraud',
+    summary: 'Remedies under the Penal Code and Debt Recovery Act for bounced cheques, online pyramid schemes, advance-fee scams, and stolen funds.',
+    summarySi: 'අගරු වූ චෙක්පත්, පිරමිඩ ජාවාරම්, අත්තිකාරම් වංචා සහ මුදල් කොල්ලකෑම් සම්බන්ධයෙන් පවතින නීතිමය පිළියම්.',
+    summaryTa: 'காசோலை நிராகரிப்பு, நிதி மோசடிகள் மற்றும் பண திருட்டுக்கான சட்டப் பரிகாரங்கள்.',
+    sections: [
+      {
+        actOrArticle: 'Penal Code of Sri Lanka (Section 398 & 403)',
+        heading: 'Cheating, Deception & Fraudulent Inducement',
+        description: 'Dishonestly inducing anyone to deliver property or money by deceit is cheating punishable by up to 7 years imprisonment and court fines.',
+        keyTakeaways: ['Formal complaint lodged at Police Station or CID', 'Police can obtain court orders to freeze recipient bank accounts', 'Victims can seek restitution through criminal court proceedings']
+      },
+      {
+        actOrArticle: 'Debt Recovery (Special Provisions) Act & Civil Law',
+        heading: 'Dishonored / Bounced Cheques Redress',
+        description: 'Issuing a cheque with knowledge of insufficient funds gives rise to summary civil recovery action in District Court and criminal investigation.',
+        keyTakeaways: ['Statutory letter of demand must be dispatched by registered post', 'Summary procedure provides expedited Decree Nisi within months', 'Banking records serve as conclusive legal evidence']
+      }
+    ]
+  },
+  {
+    title: 'Right to Information (RTI) & Public Accountability',
+    titleSi: 'තොරතුරු දැනගැනීමේ අයිතිය (RTI) සහ රාජ්‍ය වගවීම',
+    titleTa: 'தகவல் அறியும் உரிமை (RTI) மற்றும் பொதுப் பொறுப்புடைமை',
+    category: 'Right to Information',
+    summary: 'Constitutional and statutory citizen right to access public records, tender details, and government decisions within 14-21 days.',
+    summarySi: 'දින 14-21ක් ඇතුළත රාජ්‍ය ලේඛන, ටෙන්ඩර් විස්තර සහ තීරණ ලබාගැනීම සඳහා පුරවැසියන්ට ඇති ව්‍යවස්ථාපිත අයිතිය.',
+    summaryTa: 'பொது பதிவுகள் மற்றும் அரசாங்க முடிவுகளை அணுகுவதற்கான அரசியலமைப்பு மற்றும் சட்டப்பூர்வ உரிமை.',
+    sections: [
+      {
+        actOrArticle: 'Right to Information Act No. 12 of 2016 (Section 3)',
+        heading: 'Citizen Access to Public Records',
+        description: 'Every Sri Lankan citizen has the right to obtain information from Ministries, Departments, Provincial Councils, and local authorities using the standard RTI 01 form.',
+        keyTakeaways: ['Information Officer must respond within 14 working days', 'Applies to state procurement, project budgets, and public decisions', 'Nominal fees strictly controlled by statutory gazette']
+      },
+      {
+        actOrArticle: 'RTI Act No. 12 of 2016 (Section 31 & 32)',
+        heading: 'Appeals to RTI Commission',
+        description: 'If a request is rejected or ignored, citizens can appeal to the Designated Officer and then the independent RTI Commission, whose orders are binding under law.',
+        keyTakeaways: ['Right of appeal against unlawful refusal or delay', 'RTI Commission orders carry the weight of a Magistrate summons', 'Willful refusal to provide information is a criminal offence']
+      }
+    ]
   }
 ];
 
