@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -17,6 +17,7 @@ import { FaXmark, FaScaleBalanced } from 'react-icons/fa6';
 export const App = () => {
   const { login, register } = useAuth();
   const { t } = useLanguage();
+  const location = useLocation();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -60,7 +61,7 @@ export const App = () => {
         </Routes>
       </main>
 
-      <Footer />
+      {location.pathname !== '/chat' && <Footer />}
 
       {/* Login / Register Modal */}
       {authModalOpen && (

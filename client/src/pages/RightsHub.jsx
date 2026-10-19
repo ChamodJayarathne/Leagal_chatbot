@@ -20,7 +20,7 @@ import {
   FaLightbulb,
 } from 'react-icons/fa6';
 
-// ── Sample scenario prompts ───────────────────────────────────────────────────
+
 const SAMPLE_SCENARIOS = [
   'My employer fired me without any notice after 3 years of service',
   'Police arrested me last night without telling me the reason',

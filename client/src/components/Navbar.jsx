@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import {
   FaScaleBalanced,
   FaComments,
@@ -15,12 +16,16 @@ import {
   FaCircleUser,
   FaRightFromBracket,
   FaBars,
-  FaXmark
+  FaXmark,
+  FaSun,
+  FaMoon,
+  FaGlasses
 } from 'react-icons/fa6';
 
 export const Navbar = ({ onOpenAuth }) => {
   const { language, setLanguage, t } = useLanguage();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -79,6 +84,33 @@ export const Navbar = ({ onOpenAuth }) => {
 
         {/* Actions & Language Selector */}
         <div className="navbar-actions">
+          {/* Professional Theme Switcher: Light Mode & Reader Mode only */}
+          <button
+            onClick={toggleTheme}
+            className="theme-toggle-btn"
+            title={`Current Theme: ${theme === 'contrast' ? 'Reader Mode' : 'Light Mode'}. Click to switch.`}
+            style={{
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-color)',
+              color: theme === 'contrast' ? '#38bdf8' : '#b45309',
+              padding: '7px 12px',
+              borderRadius: '10px',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              transition: 'all 0.2s'
+            }}
+          >
+            {theme === 'contrast' ? (
+              <><FaGlasses /> <span>Reader Mode</span></>
+            ) : (
+              <><FaSun /> <span>Light Mode</span></>
+            )}
+          </button>
+
           {/* Language Switcher */}
           <div className="language-selector">
             <FaGlobe className="lang-icon" />
@@ -88,8 +120,8 @@ export const Navbar = ({ onOpenAuth }) => {
               className="lang-select"
             >
               <option value="en">English</option>
-              <option value="si">සිංහල (Sinhala)</option>
-              <option value="ta">தமிழ் (Tamil)</option>
+              <option value="si">සිංහල</option>
+              <option value="ta">தமிழ்</option>
             </select>
           </div>
 

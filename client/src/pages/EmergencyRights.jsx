@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
-import { 
-  FaShieldHalved, 
-  FaPhoneVolume, 
-  FaVolumeHigh, 
-  FaVolumeXmark, 
+import {
+  FaShieldHalved,
+  FaPhoneVolume,
+  FaVolumeHigh,
+  FaVolumeXmark,
   FaComments,
   FaScaleBalanced,
   FaTriangleExclamation,
@@ -209,13 +209,13 @@ export const EmergencyRights = () => {
       try {
         sirenOscRef.current.stop();
         sirenOscRef.current.disconnect();
-      } catch (e) {}
+      } catch (e) { }
       sirenOscRef.current = null;
     }
     if (audioCtxRef.current) {
       try {
         audioCtxRef.current.close();
-      } catch (e) {}
+      } catch (e) { }
       audioCtxRef.current = null;
     }
     setSirenPlaying(false);
@@ -271,8 +271,8 @@ export const EmergencyRights = () => {
     }
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setLocationState({ 
-          status: 'success', 
+        setLocationState({
+          status: 'success',
           coords: { lat: position.coords.latitude, lng: position.coords.longitude },
           address: `${position.coords.latitude.toFixed(5)}, ${position.coords.longitude.toFixed(5)}`
         });
@@ -409,7 +409,7 @@ Article 13(1) & 13(2) - 1978 Constitution of the Democratic Socialist Republic o
 ================================================`;
 
     navigator.clipboard.writeText(reportText);
-    
+
     // Also trigger instant file download
     const blob = new Blob([reportText], { type: 'text/plain' });
     const downloadLink = document.createElement('a');
@@ -438,7 +438,7 @@ Article 13(1) & 13(2) - 1978 Constitution of the Democratic Socialist Republic o
   // Broadcast WhatsApp Link to a contact
   const getWhatsAppAlertUrl = (phone) => {
     const cleanPhone = phone.replace(/[^0-9]/g, '');
-    const locText = locationState.coords 
+    const locText = locationState.coords
       ? `My live GPS location is: https://maps.google.com/?q=${locationState.coords.lat},${locationState.coords.lng}`
       : 'Location GPS could not be attached.';
     const msg = encodeURIComponent(`🚨 EMERGENCY LEGAL ALERT!
@@ -498,7 +498,7 @@ Please contact my legal representative or follow up at the nearest police statio
       <div style={{ maxWidth: '360px', margin: '40px auto', background: '#0f172a', borderRadius: '24px', padding: '24px', border: '2px solid #334155', boxShadow: '0 20px 40px rgba(0,0,0,0.8)', fontFamily: 'monospace' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <span style={{ color: '#64748b', fontSize: '0.8rem' }}>Standard Calculator</span>
-          <button 
+          <button
             onClick={() => setDisguiseMode(false)}
             style={{ background: 'none', border: 'none', color: '#475569', fontSize: '0.75rem', cursor: 'pointer' }}
             title="Unlock Secretly"
@@ -506,7 +506,7 @@ Please contact my legal representative or follow up at the nearest police statio
             [exit disguise]
           </button>
         </div>
-        
+
         {/* Screen */}
         <div style={{ background: '#020617', color: '#38bdf8', fontSize: '2.4rem', textAlign: 'right', padding: '16px', borderRadius: '12px', marginBottom: '20px', minHeight: '64px', overflowX: 'auto' }}>
           {calcInput}
@@ -545,10 +545,10 @@ Please contact my legal representative or follow up at the nearest police statio
   // -------------------------------------------------------------
   return (
     <div className={`emergency-page container ${sosMode ? 'sos-active' : ''}`}>
-      
+
       {/* Top Action & Utility Bar (Inside page layout, completely below navbar) */}
       <div className="sos-toggle-bar" style={{ marginTop: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-        <button 
+        <button
           className={`btn-sos-toggle ${sosMode ? 'active emergency-pulse' : ''}`}
           onClick={() => {
             const nextMode = !sosMode;
@@ -563,8 +563,10 @@ Please contact my legal representative or follow up at the nearest police statio
           <FaTriangleExclamation /> {sosMode ? 'SOS RED DEFENSE ACTIVE' : 'ACTIVATE SOS RED DEFENSE'}
         </button>
 
-        {/* Camouflage Mode Button */}
-        <button 
+
+        <>
+          {/* Camouflage Mode Button */}
+          {/* <button 
           onClick={() => setDisguiseMode(true)}
           title="Disguise as Calculator"
           style={{ 
@@ -583,23 +585,25 @@ Please contact my legal representative or follow up at the nearest police statio
           }}
         >
           <FaCalculator /> Camouflage Disguise
-        </button>
+        </button> */}
+        </>
+
 
         {/* Stealth Quick Exit Button */}
-        <button 
+        <button
           onClick={stealthExit}
           title="Instant Exit to Google"
-          style={{ 
-            background: 'rgba(239, 68, 68, 0.1)', 
-            color: '#ef4444', 
-            border: '1.5px solid rgba(239, 68, 68, 0.4)', 
-            borderRadius: '12px', 
-            padding: '12px 18px', 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '8px', 
-            cursor: 'pointer', 
-            fontSize: '0.95rem', 
+          style={{
+            background: 'rgba(239, 68, 68, 0.1)',
+            color: '#ef4444',
+            border: '1.5px solid rgba(239, 68, 68, 0.4)',
+            borderRadius: '12px',
+            padding: '12px 18px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            fontSize: '0.95rem',
             fontWeight: 'bold',
             transition: 'all 0.2s'
           }}
@@ -631,13 +635,13 @@ Please contact my legal representative or follow up at the nearest police statio
             <span>{speaking ? t.stopAudio : 'Read Rules Aloud'}</span>
           </button>
 
-          <button 
-            onClick={toggleSiren} 
-            className="btn btn-audio-read" 
-            style={{ 
-              background: sirenPlaying ? '#ef4444' : 'rgba(239, 68, 68, 0.15)', 
-              borderColor: '#ef4444', 
-              color: sirenPlaying ? '#fff' : '#ef4444' 
+          <button
+            onClick={toggleSiren}
+            className="btn btn-audio-read"
+            style={{
+              background: sirenPlaying ? '#ef4444' : 'rgba(239, 68, 68, 0.15)',
+              borderColor: '#ef4444',
+              color: sirenPlaying ? '#fff' : '#ef4444'
             }}
           >
             {sirenPlaying ? <FaBellSlash className="emergency-pulse" /> : <FaBell />}
@@ -651,11 +655,11 @@ Please contact my legal representative or follow up at the nearest police statio
         </div>
       </div>
 
-      {/* DYNAMIC EMERGENCY TOOLKIT DOCK */}
+      {/*  EMERGENCY TOOLKIT DOCK */}
       <div style={{ margin: '30px 0', background: 'var(--bg-card)', borderRadius: '20px', border: '1px solid var(--border-color)', padding: '20px', boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
           <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)' }}>
-            <FaShieldHalved style={{ color: 'var(--accent-teal)' }} /> Dynamic Legal Toolkit
+            <FaShieldHalved style={{ color: 'var(--accent-teal)' }} />Legal Toolkit
           </h3>
           {/* Toolkit Navigation Pills */}
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -730,10 +734,10 @@ Please contact my legal representative or follow up at the nearest police statio
             {locationState.status === 'success' && locationState.coords && (
               <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '10px', display: 'inline-flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: '#93c5fd' }}>
                 <span>📍 Lat: {locationState.coords.lat.toFixed(5)}, Lng: {locationState.coords.lng.toFixed(5)}</span>
-                <a 
+                <a
                   href={`https://wa.me/?text=LEGAL EMERGENCY! My GPS location is: https://maps.google.com/?q=${locationState.coords.lat},${locationState.coords.lng}`}
-                  target="_blank" 
-                  rel="noreferrer" 
+                  target="_blank"
+                  rel="noreferrer"
                   style={{ background: '#22c55e', color: '#fff', padding: '4px 10px', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
                   <FaShareNodes /> WhatsApp Coordinates
@@ -803,10 +807,10 @@ Please contact my legal representative or follow up at the nearest police statio
 
               {/* Progress Bar */}
               <div style={{ width: '100%', height: '12px', background: '#1e293b', borderRadius: '6px', overflow: 'hidden' }}>
-                <div 
-                  style={{ 
-                    height: '100%', 
-                    width: `${Math.min(100, (detentionSeconds / (24 * 3600)) * 100)}%`, 
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${Math.min(100, (detentionSeconds / (24 * 3600)) * 100)}%`,
                     background: detentionSeconds > 24 * 3600 ? '#ef4444' : 'linear-gradient(90deg, var(--accent-gold), #f59e0b)',
                     transition: 'width 1s linear'
                   }}
@@ -834,7 +838,7 @@ Please contact my legal representative or follow up at the nearest police statio
               {legalScripts.map((script, idx) => {
                 const phraseInCurrentLang = language === 'si' ? script.si : language === 'ta' ? script.ta : script.en;
                 return (
-                  <div 
+                  <div
                     key={idx}
                     style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '12px', padding: '16px' }}
                   >
@@ -1063,21 +1067,21 @@ Please contact my legal representative or follow up at the nearest police statio
       <div className="situation-wizard" style={{ marginBottom: '30px', textAlign: 'center' }}>
         <h3 style={{ marginBottom: '16px', color: 'var(--text-primary)' }}>What is happening right now?</h3>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button 
+          <button
             className={`btn-situation ${situation === 'traffic' ? 'active' : ''}`}
             onClick={() => setSituation(situation === 'traffic' ? null : 'traffic')}
             style={{ padding: '12px 20px', borderRadius: '12px', border: '1px solid var(--border-color)', background: situation === 'traffic' ? 'var(--accent-gold)' : 'var(--bg-card)', color: situation === 'traffic' ? '#000' : 'var(--text-secondary)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
           >
             <FaCarSide /> Traffic Stop
           </button>
-          <button 
+          <button
             className={`btn-situation ${situation === 'arrest' ? 'active' : ''}`}
             onClick={() => setSituation(situation === 'arrest' ? null : 'arrest')}
             style={{ padding: '12px 20px', borderRadius: '12px', border: '1px solid var(--border-color)', background: situation === 'arrest' ? '#ef4444' : 'var(--bg-card)', color: situation === 'arrest' ? '#fff' : 'var(--text-secondary)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
           >
             <FaHandcuffs /> Arrested
           </button>
-          <button 
+          <button
             className={`btn-situation ${situation === 'search' ? 'active' : ''}`}
             onClick={() => setSituation(situation === 'search' ? null : 'search')}
             style={{ padding: '12px 20px', borderRadius: '12px', border: '1px solid var(--border-color)', background: situation === 'search' ? 'var(--accent-teal)' : 'var(--bg-card)', color: situation === 'search' ? '#000' : 'var(--text-secondary)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
@@ -1092,19 +1096,19 @@ Please contact my legal representative or follow up at the nearest police statio
             {situation === 'traffic' && (
               <>
                 <h4 style={{ color: 'var(--accent-gold)', marginBottom: '10px' }}><FaCarSide /> Action Plan: Traffic Stop</h4>
-                <p>1. Stay calm and keep your hands visible.<br/>2. Provide your Driving License and Revenue License if requested.<br/>3. You have the right to know why you were stopped.<br/>4. Do not offer bribes; it is a serious criminal offense in Sri Lanka.</p>
+                <p>1. Stay calm and keep your hands visible.<br />2. Provide your Driving License and Revenue License if requested.<br />3. You have the right to know why you were stopped.<br />4. Do not offer bribes; it is a serious criminal offense in Sri Lanka.</p>
               </>
             )}
             {situation === 'arrest' && (
               <>
                 <h4 style={{ color: '#ef4444', marginBottom: '10px' }}><FaHandcuffs /> Action Plan: Being Arrested</h4>
-                <p>1. Do not resist physically.<br/>2. Ask: "Am I under arrest, and for what specific offence?"<br/>3. Demand to make an immediate phone call to your lawyer or family.<br/>4. Exercise your right to silence. Do NOT sign blank papers or confession statements.</p>
+                <p>1. Do not resist physically.<br />2. Ask: "Am I under arrest, and for what specific offence?"<br />3. Demand to make an immediate phone call to your lawyer or family.<br />4. Exercise your right to silence. Do NOT sign blank papers or confession statements.</p>
               </>
             )}
             {situation === 'search' && (
               <>
                 <h4 style={{ color: 'var(--accent-teal)', marginBottom: '10px' }}><FaHouseUser /> Action Plan: House / Body Search</h4>
-                <p>1. Demand to inspect the official Search Warrant signed by a Magistrate.<br/>2. If without a warrant, politely object unless conducted under specific emergency statutory powers.<br/>3. Insist on two independent neighborhood witnesses and demand an official signed seizure receipt for every item taken.</p>
+                <p>1. Demand to inspect the official Search Warrant signed by a Magistrate.<br />2. If without a warrant, politely object unless conducted under specific emergency statutory powers.<br />3. Insist on two independent neighborhood witnesses and demand an official signed seizure receipt for every item taken.</p>
               </>
             )}
           </div>
@@ -1145,8 +1149,8 @@ Please contact my legal representative or follow up at the nearest police statio
         {guideData?.keyRules.map((ruleObj, idx) => {
           const isExpanded = expandedRule === idx || sosMode || situation !== null;
           return (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className={`rule-card dynamic-rule-card ${isExpanded ? 'expanded' : ''} ${sosMode ? 'sos-border' : ''}`}
               onClick={() => !sosMode && setExpandedRule(isExpanded ? null : idx)}
               style={{ cursor: sosMode ? 'default' : 'pointer' }}
@@ -1163,7 +1167,7 @@ Please contact my legal representative or follow up at the nearest police statio
                     </span>
                   )}
                 </div>
-                
+
                 {isExpanded && (
                   <div className="rule-detail-animated" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
                     <p>{ruleObj.detail}</p>
@@ -1185,12 +1189,12 @@ Please contact my legal representative or follow up at the nearest police statio
         <h3 style={{ color: sosMode ? '#ef4444' : 'var(--text-primary)' }}>Need Immediate Legal Advice for Your Situation?</h3>
         <p>Ask LegalAI Assistant right now for immediate guidance tailored to Sri Lankan Law.</p>
         <button
-          onClick={() => navigate('/chat', { 
-            state: { 
-              initialQuery: situation 
-                ? `Help! I am currently experiencing a ${situation} in Sri Lanka. What should I do right now?` 
-                : 'Help! I have been stopped or detained by police in Sri Lanka. What should I do right now?' 
-            } 
+          onClick={() => navigate('/chat', {
+            state: {
+              initialQuery: situation
+                ? `Help! I am currently experiencing a ${situation} in Sri Lanka. What should I do right now?`
+                : 'Help! I have been stopped or detained by police in Sri Lanka. What should I do right now?'
+            }
           })}
           className="btn btn-primary btn-lg btn-emergency-pulse"
           style={{ background: sosMode ? '#ef4444' : '', boxShadow: sosMode ? '0 4px 20px rgba(239, 68, 68, 0.4)' : '' }}

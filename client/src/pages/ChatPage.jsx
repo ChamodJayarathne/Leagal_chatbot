@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { 
   FaComments, 
   FaPlus, 
@@ -16,12 +17,18 @@ import {
   FaScaleBalanced, 
   FaBookBookmark, 
   FaTriangleExclamation,
-  FaSpinner
+  FaSpinner,
+  FaSun,
+  FaMoon,
+  FaGlasses,
+  FaFont,
+  FaEye
 } from 'react-icons/fa6';
 
 export const ChatPage = () => {
   const { language, t } = useLanguage();
   const { user } = useAuth();
+  const { theme, setTheme, fontSize, setFontSize } = useTheme();
   const location = useLocation();
 
   const [sessions, setSessions] = useState([]);
@@ -35,6 +42,8 @@ export const ChatPage = () => {
 
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const latestQuestionRef = useRef(null);
 
   // Fetch chat sessions list
   const fetchSessions = async () => {
@@ -72,7 +81,22 @@ export const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!chatContainerRef.current) return;
+    const container = chatContainerRef.current;
+
+    // Keep the question and the beginning of the legal answer visible in the upper side of the chat view
+    if (latestQuestionRef.current) {
+      const targetTop = latestQuestionRef.current.offsetTop - 16;
+      container.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: 'smooth'
+      });
+    } else {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages, loading]);
 
   const handleSendMessage = async (textToSend = null) => {
@@ -192,8 +216,122 @@ export const ChatPage = () => {
           <span>{t.disclaimerText}</span>
         </div>
 
+        {/* Reading Environment & Theme Control Bar */}
+        <div className="chat-reading-bar" style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '8px 24px',
+          background: 'var(--bg-secondary)',
+          borderBottom: '1px solid var(--border-color)',
+          fontSize: '0.85rem',
+          flexWrap: 'wrap',
+          gap: '10px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <FaEye style={{ color: 'var(--accent-teal)' }} />
+            <span style={{ fontWeight: '600', color: 'var(--text-muted)' }}>Reading Theme:</span>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => setTheme('light')}
+                style={{
+                  background: theme === 'light' ? '#b45309' : 'var(--bg-card)',
+                  color: theme === 'light' ? '#fff' : 'var(--text-secondary)',
+                  border: '1px solid var(--border-color)',
+                  padding: '5px 12px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: '600',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <FaSun /> Light Mode
+              </button>
+              <button
+                type="button"
+                onClick={() => setTheme('contrast')}
+                style={{
+                  background: theme === 'contrast' ? '#38bdf8' : 'var(--bg-card)',
+                  color: theme === 'contrast' ? '#000' : 'var(--text-secondary)',
+                  border: '1px solid var(--border-color)',
+                  padding: '5px 12px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.82rem',
+                  fontWeight: '600',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <FaGlasses /> Reader Mode
+              </button>
+            </div>
+          </div>
+
+          {/* Font Size Zoom Controls */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)' }}>
+            <FaFont />
+            <span style={{ fontSize: '0.8rem', marginRight: '4px' }}>Text Size:</span>
+            <button
+              type="button"
+              onClick={() => setFontSize('normal')}
+              style={{
+                background: fontSize === 'normal' ? 'var(--accent-teal)' : 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
+                color: fontSize === 'normal' ? '#000' : 'var(--text-muted)',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                fontWeight: fontSize === 'normal' ? '700' : '400'
+              }}
+            >
+              A
+            </button>
+            <button
+              type="button"
+              onClick={() => setFontSize('large')}
+              style={{
+                background: fontSize === 'large' ? 'var(--accent-teal)' : 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
+                color: fontSize === 'large' ? '#000' : 'var(--text-muted)',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                fontSize: '0.85rem',
+                cursor: 'pointer',
+                fontWeight: fontSize === 'large' ? '700' : '400'
+              }}
+            >
+              A+
+            </button>
+            <button
+              type="button"
+              onClick={() => setFontSize('xl')}
+              style={{
+                background: fontSize === 'xl' ? 'var(--accent-teal)' : 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
+                color: fontSize === 'xl' ? '#000' : 'var(--text-muted)',
+                padding: '2px 8px',
+                borderRadius: '4px',
+                fontSize: '0.95rem',
+                cursor: 'pointer',
+                fontWeight: fontSize === 'xl' ? '700' : '400'
+              }}
+            >
+              A++
+            </button>
+          </div>
+        </div>
+
         {/* Message Stream */}
-        <div className="chat-messages-container">
+        <div className="chat-messages-container" ref={chatContainerRef}>
           {messages.length === 0 ? (
             <div className="chat-welcome-state">
               <FaScaleBalanced className="welcome-logo" />
@@ -222,52 +360,59 @@ export const ChatPage = () => {
               </div>
             </div>
           ) : (
-            messages.map((msg, idx) => (
-              <div key={idx} className={`message-row ${msg.sender}`}>
-                <div className={`message-bubble ${msg.sender}`}>
-                  <div className="message-header">
-                    <span className="sender-name">
-                      {msg.sender === 'user' ? 'You (Citizen)' : 'LegalAI Advisor'}
-                    </span>
-                    <span className="timestamp">
-                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                  </div>
+            (() => {
+              const lastUserIdx = messages.map(m => m.sender).lastIndexOf('user');
+              return messages.map((msg, idx) => (
+                <div 
+                  key={idx} 
+                  ref={idx === lastUserIdx ? latestQuestionRef : null}
+                  className={`message-row ${msg.sender}`}
+                >
+                  <div className={`message-bubble ${msg.sender}`}>
+                    <div className="message-header">
+                      <span className="sender-name">
+                        {msg.sender === 'user' ? 'You (Citizen)' : 'LegalAI Advisor'}
+                      </span>
+                      <span className="timestamp">
+                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
 
-                  <div className="message-body">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
+                    <div className="message-body">
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
 
-                  {/* Citations Badges */}
-                  {msg.citations && msg.citations.length > 0 && (
-                    <div className="citations-block">
-                      <span className="citations-label">{t.citatedLaws}</span>
-                      <div className="citation-chips">
-                        {msg.citations.map((c, cIdx) => (
-                          <span key={cIdx} className="citation-chip">
-                            📜 {c.actName} ({c.section})
-                          </span>
-                        ))}
+                    {/* Citations Badges */}
+                    {msg.citations && msg.citations.length > 0 && (
+                      <div className="citations-block">
+                        <span className="citations-label">{t.citatedLaws}</span>
+                        <div className="citation-chips">
+                          {msg.citations.map((c, cIdx) => (
+                            <span key={cIdx} className="citation-chip">
+                              📜 {c.actName} ({c.section})
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Action Toolbar */}
-                  {msg.sender === 'assistant' && (
-                    <div className="message-toolbar">
-                      <button onClick={() => handleCopy(msg.content, idx)} className="tool-btn">
-                        {copiedIdx === idx ? <FaCheck className="success-icon" /> : <FaCopy />}
-                        {copiedIdx === idx ? t.copiedText : t.copyText}
-                      </button>
-                      <button onClick={() => handleSpeak(msg.content, idx)} className="tool-btn">
-                        {speakingIdx === idx ? <FaVolumeXmark className="active-icon" /> : <FaVolumeHigh />}
-                        {speakingIdx === idx ? t.stopAudio : t.readAloud}
-                      </button>
-                    </div>
-                  )}
+                    {/* Action Toolbar */}
+                    {msg.sender === 'assistant' && (
+                      <div className="message-toolbar">
+                        <button onClick={() => handleCopy(msg.content, idx)} className="tool-btn">
+                          {copiedIdx === idx ? <FaCheck className="success-icon" /> : <FaCopy />}
+                          {copiedIdx === idx ? t.copiedText : t.copyText}
+                        </button>
+                        <button onClick={() => handleSpeak(msg.content, idx)} className="tool-btn">
+                          {speakingIdx === idx ? <FaVolumeXmark className="active-icon" /> : <FaVolumeHigh />}
+                          {speakingIdx === idx ? t.stopAudio : t.readAloud}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))
+              ));
+            })()
           )}
 
           {loading && (
