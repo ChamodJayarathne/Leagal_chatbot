@@ -149,14 +149,45 @@ export const initialRightsData = [
     ]
   },
   {
-    title: 'Protection Against Financial Scams, Fraud & Cheating',
-    titleSi: 'මූල්‍ය වංචා, කූට ක්‍රියා සහ රැවටීම් වලින් ආරක්ෂාවීම',
-    titleTa: 'நிதி மோசடிகள் மற்றும் ஏமாற்றல்களுக்கு எதிரான பாதுகாப்பு',
+    title: 'Criminal Offences, Assault, Property Damage & Fraud Protection',
+    titleSi: 'පහරදීම්, දේපළ හානි, අපරාධ වැරදි සහ මූල්‍ය වංචා වලින් ආරක්ෂාවීම',
+    titleTa: 'தாக்குதல், சொத்து சேதம், குற்றவியல் குற்றங்கள் மற்றும் மோசடி பாதுகாப்பு',
     category: 'Criminal & Fraud',
-    summary: 'Remedies under the Penal Code and Debt Recovery Act for bounced cheques, online pyramid schemes, advance-fee scams, and stolen funds.',
-    summarySi: 'අගරු වූ චෙක්පත්, පිරමිඩ ජාවාරම්, අත්තිකාරම් වංචා සහ මුදල් කොල්ලකෑම් සම්බන්ධයෙන් පවතින නීතිමය පිළියම්.',
-    summaryTa: 'காசோலை நிராகரிப்பு, நிதி மோசடிகள் மற்றும் பண திருட்டுக்கான சட்டப் பரிகாரங்கள்.',
+    summary: 'Remedies under the Penal Code for physical assault, grievous hurt, broken bones, deliberate property damage, mischief, false representation, deceptive sales, bounced cheques, and scams.',
+    summarySi: 'ශාරීරික පහරදීම්, බරපතල තුවාල, චේතනාන්විත දේපළ හානි, අසත්‍ය ප්‍රකාශ මගින් සිදුකරන රැවටීම් සහ මූල්‍ය වංචා සම්බන්ධයෙන් පවතින නීතිමය පිළියම්.',
+    summaryTa: 'சரீர தாக்குதல், பலத்த காயம், வேண்டுமென்றே சொத்து சேதம், தவறான தகவல்கள் மற்றும் நிதி மோசடிக்கான சட்டப் பரிகாரங்கள்.',
     sections: [
+      {
+        actOrArticle: 'Penal Code of Sri Lanka (Section 311 & 316)',
+        heading: 'Physical Assault, Grievous Hurt & Broken Bones',
+        description: 'Punching or striking a person resulting in a bone fracture (such as a broken nose) is legally designated as Grievous Hurt under Section 311 (Clause 6), punishable under Section 316 with rigorous imprisonment up to 7 years. Police must refer victims to the JMO for a Medico-Legal Report (MLR) and produce the accused in the Magistrate\'s Court.',
+        keyTakeaways: [
+          'Bone fractures (broken nose, jaw) legally constitute Grievous Hurt',
+          'Cognizable offence carrying up to 7 years rigorous imprisonment',
+          'Examination by government Judicial Medical Officer (JMO) required as primary evidence',
+          'Victims can file a civil claim for delictual damages (medical bills, pain and suffering) in District Court'
+        ]
+      },
+      {
+        actOrArticle: 'Penal Code (Section 398 & 403) & Consumer Affairs Authority Act',
+        heading: 'False Representation, Concealed Accident History & Deceptive Sale',
+        description: 'A seller who dishonestly conceals prior accident damage or makes false statements to induce a buyer to purchase a vehicle commits criminal Cheating under Penal Code §398 and deceptive conduct under the CAA Act. Buyers can lodge police complaints, file with the CAA, or rescind the purchase for a full refund.',
+        keyTakeaways: [
+          'Deceptive sales and concealed accident history constitute criminal Cheating',
+          'Right to cancel contract (rescission) and obtain a full refund under Roman-Dutch law',
+          'Consumer Affairs Authority (Hotline 1977) can summon sellers and order compensation'
+        ]
+      },
+      {
+        actOrArticle: 'Penal Code of Sri Lanka (Section 408 & 410) & Offences Against Property Act',
+        heading: 'Mischief, Property Vandalism & Deliberate Damage',
+        description: 'Intentionally destroying or damaging another person\'s vehicle, premises, or property using weapons (metal bar, clubs) or physical force is criminal Mischief punishable with imprisonment and court-mandated compensation.',
+        keyTakeaways: [
+          'Immediate Police B-Report lodged for criminal damage and vandalism',
+          'Police have powers to arrest offenders and seize weapons used in the attack',
+          'Victims can claim full replacement costs and delictual damages in District Court'
+        ]
+      },
       {
         actOrArticle: 'Penal Code of Sri Lanka (Section 398 & 403)',
         heading: 'Cheating, Deception & Fraudulent Inducement',

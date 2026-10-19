@@ -104,10 +104,28 @@ const SCENARIO_KEYWORD_MAP = [
       'fraud', 'scam', 'cheating', 'cheated', 'bounced cheque', 'dishonor',
       'dishonoured', 'stolen money', 'theft', 'extortion', 'pyramid scheme',
       'conned', 'deceived', 'stolen', 'robbed', 'financial scam',
+      'mischief', 'smash', 'smashes', 'smashed', 'vandalism', 'vandalize',
+      'damage property', 'destroy', 'metal bar', 'weapon', 'criminal damage',
+      'broken window', 'windows', 'malicious damage',
+      'assault', 'punch', 'punches', 'punched', 'broken nose', 'fracture',
+      'grievous hurt', 'hurt', 'fight', 'argument', 'face', 'punched in the face',
+      'medical treatment', 'facial injury', 'bone fracture',
+      'seller', 'buyer', 'buys', 'sold', 'false statement', 'misrepresentation',
+      'accident history', 'concealed defect', 'previously damaged', 'seriously damaged',
+      'lied about', 'car sale fraud', 'deceptive sale',
     ],
     relevanceLabels: {
-      high: ['fraud', 'scam', 'bounced cheque', 'stolen money', 'cheating'],
-      medium: ['dishonor', 'theft', 'extortion', 'pyramid scheme'],
+      high: [
+        'fraud', 'scam', 'bounced cheque', 'stolen money', 'cheating',
+        'mischief', 'smash', 'smashed', 'vandalism', 'metal bar', 'criminal damage',
+        'assault', 'punch', 'punches', 'punched', 'broken nose', 'grievous hurt',
+        'misrepresentation', 'false statement', 'previously damaged'
+      ],
+      medium: [
+        'dishonor', 'theft', 'extortion', 'pyramid scheme', 'destroy', 'weapon',
+        'damage property', 'fight', 'argument', 'medical treatment', 'seller', 'buyer',
+        'concealed defect', 'car sale fraud'
+      ],
     }
   },
   {
@@ -222,20 +240,20 @@ const buildLocalAnalysis = (scenario, matchedRights, ragCitations) => {
   } else {
     if (/\b(police|arrest(ed)?|detain(ed)?|custody|jail|locked up|interrogat(ed|ion)?|\bwarrant\b)\b/i.test(scenario)) {
       targetCategory = 'Fundamental Rights';
-    } else if (/\b(domestic\s+violence|domestic\s+abuse|abusive|assault(ed)?|beat(ing|en)?|slap(ped)?|husband|wife|spouse)\b/i.test(scenario)) {
+    } else if (/\b(domestic\s+violence|domestic\s+abuse|husband|wife|spouse|partner\s+abuse|cohabit)\b/i.test(scenario)) {
       targetCategory = 'Family Law';
     } else if (/\b(fired|dismiss(ed|al)?|terminat(ed|ion)?|salary|wages?|unpaid|not paid|employer|boss|labour\s+tribunal|gratuity)\b/i.test(scenario)) {
       targetCategory = 'Employment Law';
     } else if (/\b(landlord|evict(ion|ed)?|\brent(al|ing)?\b|tenant|kicked out|vacate|locked out|lease)\b/i.test(scenario)) {
       targetCategory = 'Tenancy & Property';
-    } else if (/\b(consumer|warranty|defective|faulty|repair|refund|replacement|replace|shop|store|trader|overcharg(e|ed|ing)?|\bmrp\b|expired|bad food|seller)\b/i.test(scenario)) {
+    } else if (/\b(consumer|warranty|defective|faulty|repair|refund|replacement|replace|shop|store|trader|overcharg(e|ed|ing)?|\bmrp\b|expired|bad food)\b/i.test(scenario)) {
       targetCategory = 'Consumer Rights';
     } else if (/\b(cyber|hack(ed)?|social media|facebook|instagram|whatsapp|blackmail|intimate|photos?|doxx|fake account|leak(ed)?|online harassment|bullying)\b/i.test(scenario)) {
       targetCategory = 'Cyber & Digital Law';
-    } else if (/\b(accident|car crash|motorcycle|hit and run|vehicle|collision|driver|traffic police|insurance claim|knocked down|pedestrian)\b/i.test(scenario)) {
-      targetCategory = 'Traffic & Accidents';
-    } else if (/\b(scam(med)?|fraud|cheated|cheating|bounced cheque|dishonor(ed)?|dishonoured|stolen money|pyramid scheme|deceived|conned|extort(ion)?)\b/i.test(scenario)) {
+    } else if (/\b(scam(med)?|fraud|cheated|cheating|bounced cheque|dishonor(ed)?|dishonoured|stolen money|pyramid scheme|deceived|conned|extort(ion)?|mischief|smash(es|ed|ing)?|vandal(ism|ize)?|damage(d)?\s+(property|car|vehicle)|metal\s+bar|criminal\s+damage|assault(ed|ing)?|punch(es|ed|ing)?|punched|broken\s+nose|fracture|grievous\s+hurt|facial\s+injury|false\s+statement|misrepresent(ation|ed)?|previously\s+damaged|damaged\s+in\s+an\s+accident|accident\s+history|concealed\s+accident)\b/i.test(scenario)) {
       targetCategory = 'Criminal & Fraud';
+    } else if (!/\b(seller|buyer|buys|sold|false\s+statement|misrepresent)\b/i.test(scenario) && /\b(accident|car crash|motorcycle|hit and run|vehicle|collision|driver|traffic police|insurance claim|knocked down|pedestrian)\b/i.test(scenario)) {
+      targetCategory = 'Traffic & Accidents';
     } else if (/\b(rti|right to information|public authority|government department|ministry|official record|tender|information officer|public records)\b/i.test(scenario)) {
       targetCategory = 'Right to Information';
     }
@@ -478,35 +496,131 @@ const buildLocalAnalysis = (scenario, matchedRights, ragCitations) => {
       }
     ];
   } else if (targetCategory === 'Criminal & Fraud') {
-    situation = 'Financial Fraud, Cheating & Debt Recovery';
-    advice = 'Dishonest deception and misappropriation of money are criminal offences under Penal Code Sections 398 and 403. Dishonored cheques give right to expedited summary civil recovery under Debt Recovery Act No. 2 of 1990 and criminal police investigation.';
-    urgency = 'medium';
-    detailedLaws = [
-      {
-        act: 'Penal Code of Sri Lanka (Cap. 19)',
-        section: 'Section 398 & 403 — Cheating & Dishonest Inducement',
-        citizenRight: 'Criminal Redress for Deception, Financial Scams & Stolen Funds',
-        howItApplies: 'Whoever deceives any person, fraudulently or dishonestly inducing them to deliver money or property, commits the offence of cheating punishable by up to 7 years rigorous imprisonment.',
-        legalRemedy: 'Lodge a formal written complaint with the Police Special Crimes Division or the CID Commercial Crimes Bureau. Police can obtain judicial orders to trace banking transactions and freeze recipient accounts.',
-        keyPoints: [
-          'Preserve all bank deposit slips, wire receipts, and messaging correspondence',
-          'Police can freeze fraudulent bank accounts through Magistrate Court orders',
-          'Criminal proceedings do not bar parallel civil recovery of monies'
-        ]
-      },
-      {
-        act: 'Debt Recovery (Special Provisions) Act No. 2 of 1990',
-        section: 'Summary Procedure for Liquidated Debts & Dishonored Cheques',
-        citizenRight: 'Expedited Court Decree for Bounced Cheques and Unpaid Debts',
-        howItApplies: 'Provides a fast-track summary court procedure in the District Court for recovering funds due on dishonored cheques, promissory notes, or written debt agreements without full trial delays.',
-        legalRemedy: 'Serve a formal Letter of Demand through an Attorney-at-Law by registered post giving 14 days notice. If unpaid, file an action under Debt Recovery Act to obtain a Decree Nisi against the debtor.',
-        keyPoints: [
-          'Expedited summary procedure significantly faster than ordinary civil litigation',
-          'Court can order sequestration of debtor assets before final judgment',
-          'Banking return memo stamped "Payment Stopped" or "Refer to Drawer" is primary evidence'
-        ]
-      }
-    ];
+    const isAssaultOrGrievousHurt = /\b(assault(ed|ing)?|punch(es|ed|ing)?|punched|broken\s+nose|fracture|grievous\s+hurt|jaw|teeth|tooth|face|facial\s+injury|medical\s+treatment|fight|argument\b.*\bpunch)\b/i.test(scenario);
+    const isFraudulentSaleOrMisrep = /\b(seller|buyer|buys|bought|sold|false\s+statement|misrepresent(ation|ed)?|concealed\s+accident|previously\s+damaged|damaged\s+in\s+an\s+accident|accident\s+history|odometer|cheated\s+by\s+seller)\b/i.test(scenario);
+    const isMischiefOrDamage = /\b(mischief|smash(es|ed|ing)?|vandal(ism|ize)?|damage(d|ing)?|destr(oy|oyed|uction)|metal\s+bar|weapon|bar\b|broken\s+window|window|car\s+window|attack|criminal\s+damage)\b/i.test(scenario);
+
+    if (isAssaultOrGrievousHurt) {
+      situation = 'Physical Assault & Grievous Hurt (Penal Code §316)';
+      advice = 'Punching someone and causing a fracture (such as a broken nose) is designated as Grievous Hurt under Section 311 of the Sri Lankan Penal Code. This is a serious cognizable criminal offence carrying up to 7 years imprisonment. You have the right to lodge a formal Police complaint, obtain an examination by a Judicial Medical Officer (JMO), and claim civil damages in court.';
+      urgency = 'high';
+      detailedLaws = [
+        {
+          act: 'Penal Code of Sri Lanka (Cap. 19)',
+          section: 'Section 311 & 316 — Voluntarily Causing Grievous Hurt',
+          citizenRight: 'Police Arrest, Criminal Prosecution & Legal Protection Against Bodily Harm',
+          howItApplies: 'Under Section 311 (Clause 6), any fracture or dislocation of a bone (including nasal bone fractures) legally constitutes Grievous Hurt. Section 316 makes voluntarily causing grievous hurt punishable with rigorous imprisonment up to 7 years and fine. It is a cognizable offence under the Code of Criminal Procedure, enabling police to arrest the assailant without a warrant.',
+          legalRemedy: 'Immediately lodge a complaint at the nearest Police Station. Demand a Police Medico-Legal Examination Form (M.O. 129) directing you to the government hospital Judicial Medical Officer (JMO) for an official Medico-Legal Report (MLR). The Police must file a B-Report in the Magistrate\'s Court for prosecution.',
+          keyPoints: [
+            'Immediate examination by a government Judicial Medical Officer (JMO) is primary court evidence',
+            'A broken nose is legally Grievous Hurt (bone fracture) carrying up to 7 years imprisonment',
+            'The Magistrate Court can remand the attacker or impose stringent bail conditions and protection orders'
+          ]
+        },
+        {
+          act: 'Law of Delict & Roman-Dutch Common Law',
+          section: 'Aquilian Action for Assault, Bodily Injury & Pain and Suffering',
+          citizenRight: 'Civil Right to Claim Medical Bills, Surgical Costs & General Damages',
+          howItApplies: 'Under the Sri Lankan law of delict, victims of battery and intentional bodily harm can sue the perpetrator in the District Court for all past and future medical treatments, reconstructive surgery, loss of earnings, and compensation for physical pain and suffering.',
+          legalRemedy: 'Instruct an Attorney-at-Law to issue a formal Letter of Demand for damages. If unpaid within 14 days, institute a civil plaint for delictual damages in the District Court. A criminal conviction in the Magistrate\'s Court serves as prima facie proof in civil proceedings.',
+          keyPoints: [
+            'Preserve all hospital discharge summaries, X-rays, medical prescriptions, and pharmacy bills',
+            'Civil suit can be filed independently of or following police criminal proceedings',
+            'Damages include both special damages (hospital expenses) and general damages (pain & suffering)'
+          ]
+        }
+      ];
+    } else if (isFraudulentSaleOrMisrep) {
+      situation = 'Fraudulent Misrepresentation & Vehicle Sale Deception';
+      advice = 'A seller who dishonestly conceals prior accident damage or makes false statements to induce a sale commits criminal Cheating under Penal Code Section 398 & 403, and violates the Consumer Affairs Authority Act No. 9 of 2003. You have the right to lodge a criminal complaint, file with the CAA, or rescind the purchase and recover your full payment in court.';
+      urgency = 'high';
+      detailedLaws = [
+        {
+          act: 'Penal Code of Sri Lanka (Cap. 19)',
+          section: 'Section 398 & 403 — Cheating & Dishonest Inducement',
+          citizenRight: 'Criminal Redress for False Vehicle History & Fraudulent Inducement',
+          howItApplies: 'Under Section 398, intentionally deceiving a buyer by fraudulently concealing a serious accident history or falsely asserting that a car was never in an accident to induce purchase constitutes criminal Cheating, punishable under Section 403 with up to 7 years rigorous imprisonment and court fines.',
+          legalRemedy: 'Lodge a formal written complaint with the Special Crimes Investigation Bureau (SCIB) or local Police Station supported by purchase agreements, seller chat logs/advertisements, and certified technical vehicle inspection reports proving prior accident damage.',
+          keyPoints: [
+            'Keep written records of the seller\'s statements, advertisements, and vehicle sale agreements',
+            'Obtain a certified technical inspection report from an accredited automotive assessment center',
+            'Police can summon the seller and investigate intentional fraud'
+          ]
+        },
+        {
+          act: 'Consumer Affairs Authority Act No. 9 of 2003 & Roman-Dutch Law of Sale',
+          section: 'Section 30 & 31 — Deceptive Conduct & Rescission of Contract (Actio Redhibitoria)',
+          citizenRight: 'Right to Cancel Purchase, Obtain Full Refund & Claim Damages',
+          howItApplies: 'Section 30 prohibits misleading or deceptive conduct in trade regarding the standard or history of goods. Under Roman-Dutch law governing vehicle sales, fraudulent misrepresentation of a material defect grants the buyer an absolute right to cancel the contract, return the car, and recover the full purchase price with interest.',
+          legalRemedy: 'Serve a formal Letter of Demand through an Attorney-at-Law demanding rescission and full refund within 14 days. Submit an official consumer complaint to the Consumer Affairs Authority (Hotline 1977). If unsettled, file an action in the District Court for cancellation and restitution.',
+          keyPoints: [
+            'Buyer can choose full refund with return of vehicle (rescission) or compensation for reduction in value',
+            'CAA has statutory powers to summon traders and order compensation',
+            'Preserve all payment receipts, bank transfer slips, and vehicle transfer forms'
+          ]
+        }
+      ];
+    } else if (isMischiefOrDamage) {
+      situation = 'Criminal Mischief, Property Damage & Weapon Attack';
+      advice = 'Deliberately smashing another person\'s vehicle or property with a weapon or bar constitutes the criminal offence of Mischief under Section 408 & 410 of the Penal Code of Sri Lanka. You have the right to lodge an immediate Police B-Report for arrest and prosecution, plus claim full repair compensation in court.';
+      urgency = 'high';
+      detailedLaws = [
+        {
+          act: 'Penal Code of Sri Lanka (Cap. 19)',
+          section: 'Section 408 & 410 — Mischief & Criminal Damage to Property',
+          citizenRight: 'Criminal Redress for Malicious Destruction of Private Property',
+          howItApplies: 'Under Section 408, causing wrongful destruction or damage to any property with intent or knowledge of causing loss or damage to the owner is Mischief. Under Section 410, committing mischief causing loss or damage exceeding fifty rupees is punishable by up to 2 years imprisonment, court fines, or both. Using an offensive weapon (metal bar) escalates the criminal gravity.',
+          legalRemedy: 'Immediately lodge a formal complaint at the local Police Station and demand the registration of a Criminal B-Report. Police have powers to arrest the offender under Section 32 of the Code of Criminal Procedure, seize the metal bar/weapon as material evidence, and produce the suspect before the Magistrate\'s Court.',
+          keyPoints: [
+            'Photograph all smashed windows, impact marks, and the scene immediately for evidence',
+            'Police must produce a formal Crime B-Report to the local Magistrate Court',
+            'Magistrate Court can order statutory criminal compensation directly to the victim under the Code of Criminal Procedure'
+          ]
+        },
+        {
+          act: 'Offences Against Public and Private Property Act No. 12 of 1982 & Civil Delict',
+          section: 'Aggravated Property Damage & Delictual Restitution (Aquilian Action)',
+          citizenRight: 'Right to Recover Total Glass Replacement, Repair Costs & General Damages',
+          howItApplies: 'In addition to state criminal prosecution, the victim possesses an absolute delictual right under Roman-Dutch common law to compel the perpetrator to pay for all repair bills, replacement parts, towing fees, loss of use, and damages for intentional aggression.',
+          legalRemedy: 'Instruct an Attorney-at-Law to dispatch a formal Letter of Demand to the offender claiming certified damages from an authorized repair center. If unfulfilled within 14 days, institute a civil action for damages in the District Court.',
+          keyPoints: [
+            'Obtain a certified damage estimate and receipt from a licensed vehicle repairer or agent',
+            'Criminal conviction in Magistrate Court provides conclusive proof of liability in civil court',
+            'Your comprehensive insurance policy may cover repairs and initiate subrogation against the attacker'
+          ]
+        }
+      ];
+    } else {
+      situation = 'Financial Fraud, Cheating & Debt Recovery';
+      advice = 'Dishonest deception and misappropriation of money are criminal offences under Penal Code Sections 398 and 403. Dishonored cheques give right to expedited summary civil recovery under Debt Recovery Act No. 2 of 1990 and criminal police investigation.';
+      urgency = 'medium';
+      detailedLaws = [
+        {
+          act: 'Penal Code of Sri Lanka (Cap. 19)',
+          section: 'Section 398 & 403 — Cheating & Dishonest Inducement',
+          citizenRight: 'Criminal Redress for Deception, Financial Scams & Stolen Funds',
+          howItApplies: 'Whoever deceives any person, fraudulently or dishonestly inducing them to deliver money or property, commits the offence of cheating punishable by up to 7 years rigorous imprisonment.',
+          legalRemedy: 'Lodge a formal written complaint with the Police Special Crimes Division or the CID Commercial Crimes Bureau. Police can obtain judicial orders to trace banking transactions and freeze recipient accounts.',
+          keyPoints: [
+            'Preserve all bank deposit slips, wire receipts, and messaging correspondence',
+            'Police can freeze fraudulent bank accounts through Magistrate Court orders',
+            'Criminal proceedings do not bar parallel civil recovery of monies'
+          ]
+        },
+        {
+          act: 'Debt Recovery (Special Provisions) Act No. 2 of 1990',
+          section: 'Summary Procedure for Liquidated Debts & Dishonored Cheques',
+          citizenRight: 'Expedited Court Decree for Bounced Cheques and Unpaid Debts',
+          howItApplies: 'Provides a fast-track summary court procedure in the District Court for recovering funds due on dishonored cheques, promissory notes, or written debt agreements without full trial delays.',
+          legalRemedy: 'Serve a formal Letter of Demand through an Attorney-at-Law by registered post giving 14 days notice. If unpaid, file an action under Debt Recovery Act to obtain a Decree Nisi against the debtor.',
+          keyPoints: [
+            'Expedited summary procedure significantly faster than ordinary civil litigation',
+            'Court can order sequestration of debtor assets before final judgment',
+            'Banking return memo stamped "Payment Stopped" or "Refer to Drawer" is primary evidence'
+          ]
+        }
+      ];
+    }
   } else if (targetCategory === 'Right to Information') {
     situation = 'Right to Information & Public Accountability';
     advice = 'Under the Right to Information Act No. 12 of 2016, public authorities are statutorily required to provide requested official records within 14 to 21 working days. If refused, you can appeal directly to the RTI Commission.';

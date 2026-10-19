@@ -100,6 +100,30 @@ export const SRI_LANKAN_LEGAL_KNOWLEDGE = [
     keywords: ['cyber', 'hack', 'hacked', 'blackmail', 'online harassment', 'social media', 'facebook', 'whatsapp', 'leak', 'intimate photos', 'fake account', 'doxxing']
   },
   {
+    id: 'penal-mischief',
+    act: 'Penal Code of Sri Lanka (Cap. 19)',
+    section: 'Section 408 & 410 — Mischief & Criminal Damage to Property',
+    title: 'Criminal Mischief, Property Vandalism & Malicious Damage',
+    content: 'Whoever causes destruction of any property or damages it with intent or knowledge of causing wrongful loss to any person commits the criminal offence of Mischief. Smashing vehicle windows, property destruction with weapons (metal bars, clubs, tools), vandalism, or damaging personal premises is punishable with rigorous imprisonment up to 2 years, court fines, and mandatory compensation orders through the Magistrate Court.',
+    keywords: ['mischief', 'smash', 'smashes', 'smashed', 'vandalism', 'vandalize', 'property damage', 'damage property', 'metal bar', 'car window', 'broken windows', 'destroy', 'destruction', 'criminal damage', 'weapon']
+  },
+  {
+    id: 'penal-assault-hurt',
+    act: 'Penal Code of Sri Lanka (Cap. 19)',
+    section: 'Section 311, 316 & 342 — Grievous Hurt, Criminal Force & Assault',
+    title: 'Physical Assault, Grievous Hurt & Bodily Injury Offences',
+    content: 'Voluntarily causing hurt is an offence under Section 314. Where an assault causes a fracture or dislocation of a bone (including a broken nose or facial bone fracture), it is designated as Grievous Hurt under Section 311 (Clause 6), punishable under Section 316 with up to 7 years rigorous imprisonment and fine. The police must issue a medico-legal form (M.O. 129) referring the victim to a government Judicial Medical Officer (JMO) for an official Medico-Legal Report (MLR). Victims can claim full medical costs, reconstructive surgery, and pain and suffering in the District Court under the law of delict.',
+    keywords: ['assault', 'punch', 'punches', 'punched', 'broken nose', 'fracture', 'grievous hurt', 'hurt', 'fight', 'argument', 'violence', 'face', 'facial injury', 'beaten', 'medical treatment', 'jmo']
+  },
+  {
+    id: 'penal-misrepresentation-sale',
+    act: 'Penal Code (Section 398 & 403) & Consumer Affairs Authority Act',
+    section: 'Section 398 & 403 — Cheating by Misrepresentation & Deceptive Sale of Goods',
+    title: 'Fraudulent Misrepresentation, Deceptive Vehicle Sales & Concealed Accident History',
+    content: 'A seller who dishonestly induces a buyer to purchase a vehicle by making false representations (such as falsely stating a car was never in an accident when it was previously seriously damaged) commits criminal Cheating under Section 398 of the Penal Code, punishable by up to 7 years imprisonment. Under Section 30 & 31 of the Consumer Affairs Authority Act No. 9 of 2003 and Roman-Dutch law of sale, the buyer has the statutory right to rescind the contract (cancel purchase), return the car, demand a full refund (actio redhibitoria), or sue for damages in the District Court.',
+    keywords: ['seller', 'buyer', 'buys', 'sold', 'false statement', 'misrepresentation', 'accident history', 'concealed defect', 'cheating', 'car purchase', 'deceptive sale', 'previously damaged', 'seriously damaged']
+  },
+  {
     id: 'motor-traffic',
     act: 'Motor Traffic Act (Cap. 203)',
     section: 'Section 99 & 160 — Motor Accidents & Mandatory Third-Party Insurance',
@@ -133,11 +157,32 @@ export const SRI_LANKAN_LEGAL_KNOWLEDGE = [
   }
 ];
 
+const RAG_STOP_WORDS = new Set([
+  'the', 'and', 'for', 'are', 'you', 'not', 'all', 'can', 'any', 'was', 'her', 'him',
+  'our', 'out', 'has', 'had', 'have', 'with', 'that', 'this', 'from', 'they', 'will',
+  'been', 'were', 'what', 'when', 'where', 'which', 'who', 'why', 'how', 'about',
+  'into', 'some', 'than', 'them', 'then', 'there', 'these', 'more', 'also', 'just',
+  'like', 'over', 'such', 'take', 'want', 'give', 'only', 'very', 'even',
+  'after', 'before', 'being', 'between', 'both', 'could', 'down', 'during', 'each',
+  'further', 'here', 'most', 'other', 'same', 'should', 'through', 'under', 'need'
+]);
+
 export const searchLegalContext = (query, maxResults = 3) => {
   if (!query || typeof query !== 'string') return [];
   
   const queryLower = query.toLowerCase();
-  const words = queryLower.split(/\s+/).filter(w => w && w.length > 2);
+  const words = queryLower
+    .split(/[\s,.;:!?()'"/\\]+/)
+    .filter(w => w && w.length > 2 && !RAG_STOP_WORDS.has(w));
+
+  const hasWordMatch = (text, word) => {
+    if (!text || !word) return false;
+    try {
+      return new RegExp(`\\b${word}\\b`, 'i').test(text);
+    } catch {
+      return text.includes(word);
+    }
+  };
 
   const scored = SRI_LANKAN_LEGAL_KNOWLEDGE.map(item => {
     let score = 0;
@@ -145,7 +190,7 @@ export const searchLegalContext = (query, maxResults = 3) => {
     // Check keyword matches
     if (Array.isArray(item.keywords)) {
       item.keywords.forEach(kw => {
-        if (kw && queryLower.includes(kw.toLowerCase())) score += 3;
+        if (kw && queryLower.includes(kw.toLowerCase())) score += 4;
       });
     }
 
@@ -158,10 +203,10 @@ export const searchLegalContext = (query, maxResults = 3) => {
     if (actLower && queryLower.includes(actLower)) score += 5;
     if (sectionLower && queryLower.includes(sectionLower)) score += 5;
     
-    // Check individual words in content and title
+    // Check individual significant words using word boundaries
     words.forEach(word => {
-      if (word && contentLower.includes(word)) score += 1;
-      if (word && titleLower.includes(word)) score += 2;
+      if (hasWordMatch(contentLower, word)) score += 1;
+      if (hasWordMatch(titleLower, word)) score += 2;
     });
 
     return { ...item, score };
