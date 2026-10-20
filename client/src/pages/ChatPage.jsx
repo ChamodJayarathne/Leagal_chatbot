@@ -6,23 +6,24 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { 
-  FaComments, 
-  FaPlus, 
-  FaPaperPlane, 
-  FaFileImage, 
-  FaVolumeHigh, 
-  FaVolumeXmark, 
-  FaCopy, 
-  FaCheck, 
-  FaScaleBalanced, 
-  FaBookBookmark, 
+  FaComments,
+  FaPlus,
+  FaPaperPlane,
+  FaFileImage,
+  FaVolumeHigh,
+  FaVolumeXmark,
+  FaCopy,
+  FaCheck,
+  FaScaleBalanced,
+  FaBookBookmark,
   FaTriangleExclamation,
   FaSpinner,
   FaSun,
   FaMoon,
   FaGlasses,
   FaFont,
-  FaEye
+  FaEye,
+  FaPrint
 } from 'react-icons/fa6';
 
 export const ChatPage = () => {
@@ -179,6 +180,33 @@ export const ChatPage = () => {
       setSpeakingIdx(idx);
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  // Export assistant answer as PDF using a printable window
+  const handleDownloadPdf = (content) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+    const safeContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Chat Answer PDF</title>
+          <style>
+            @page { size: A4; margin: 25mm 20mm 20mm 20mm; }
+            body { font-family: Arial, Helvetica, sans-serif; line-height: 1.6; color: #111; padding: 20px; }
+            .content { white-space: pre-wrap; }
+          </style>
+        </head>
+        <body>
+          <div class="content">${safeContent}</div>
+          <script>
+            window.onload = function() { window.print(); };
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   return (
@@ -406,6 +434,9 @@ export const ChatPage = () => {
                         <button onClick={() => handleSpeak(msg.content, idx)} className="tool-btn">
                           {speakingIdx === idx ? <FaVolumeXmark className="active-icon" /> : <FaVolumeHigh />}
                           {speakingIdx === idx ? t.stopAudio : t.readAloud}
+                        </button>
+                        <button onClick={() => handleDownloadPdf(msg.content)} className="tool-btn" title="Export answer as PDF">
+                          <FaPrint /> Export PDF
                         </button>
                       </div>
                     )}
