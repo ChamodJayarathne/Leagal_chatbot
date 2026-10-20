@@ -562,25 +562,44 @@ router.post('/generate', async (req, res) => {
   }
 });
 
-// Update / Edit Document Content — saves generatedContent, formData, isEdited flag and editedAt
+// Update / Edit Document Content — supports updating formData (with automatic re-generation) or manual text edits
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { generatedContent, formData, title } = req.body;
-
-    if (!generatedContent) {
-      return res.status(400).json({ message: 'generatedContent is required for update.' });
-    }
+    const { generatedContent, formData, title, reformat, language, templateId } = req.body;
 
     const editedAt = new Date();
 
-    // Build the update object — include formData if provided
+    // Check existing document
+    let existingDoc = null;
+    if (getDBStatus()) {
+      existingDoc = await Document.findById(id);
+    } else {
+      existingDoc = memoryDocuments.find(d => d._id === id || String(d._id) === id);
+    }
+
+    const tplType = templateId || existingDoc?.templateType || 'affidavit-general';
+    const docLang = language || existingDoc?.language || 'en';
+    const finalFormData = formData && typeof formData === 'object' ? formData : existingDoc?.formData || {};
+
+    let finalContent = generatedContent;
+    // If reformat is requested or formData is provided without custom generatedContent, re-generate content
+    if (reformat || (formData && !generatedContent)) {
+      finalContent = formatDocumentText(tplType, finalFormData, docLang);
+    }
+
+    if (!finalContent && !generatedContent) {
+      return res.status(400).json({ message: 'generatedContent or valid formData is required for update.' });
+    }
+
+    // Build the update object — updates both formData and generatedContent in database
     const updateFields = {
-      generatedContent,
+      generatedContent: finalContent,
+      formData: finalFormData,
       isEdited: true,
       editedAt,
       ...(title ? { title } : {}),
-      ...(formData && typeof formData === 'object' ? { formData } : {}),
+      ...(language ? { language: docLang } : {}),
     };
 
     if (getDBStatus()) {
@@ -601,10 +620,12 @@ router.put('/:id', async (req, res) => {
       // In-memory fallback
       const index = memoryDocuments.findIndex(d => d._id === id || String(d._id) === id);
       if (index === -1) {
+        const newMemoryDoc = { _id: id, templateType: tplType, ...updateFields, updatedAt: editedAt };
+        memoryDocuments.unshift(newMemoryDoc);
         return res.json({
           success: true,
           savedToDb: false,
-          document: { _id: id, ...updateFields, updatedAt: editedAt },
+          document: newMemoryDoc,
         });
       }
       Object.assign(memoryDocuments[index], updateFields);

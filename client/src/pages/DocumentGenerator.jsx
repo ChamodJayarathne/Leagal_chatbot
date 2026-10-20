@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { 
-  FaFileContract, 
-  FaPrint, 
-  FaDownload, 
-  FaCopy, 
-  FaCheck, 
+import {
+  FaFileContract,
+  FaPrint,
+  FaDownload,
+  FaCopy,
+  FaCheck,
   FaWandMagicSparkles,
   FaFileLines,
   FaFilePen,
@@ -33,6 +33,8 @@ export const DocumentGenerator = () => {
   const [templates, setTemplates] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formData, setFormData] = useState({});
+  const [updateFormData, setUpdateFormData] = useState({});
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [generatedDocument, setGeneratedDocument] = useState('');
   const [originalDocument, setOriginalDocument] = useState('');
   const [editableContent, setEditableContent] = useState('');
@@ -211,6 +213,87 @@ export const DocumentGenerator = () => {
     setIsEditing(false);
   };
 
+  // Open Update Form Modal populated with current form data
+  const handleOpenUpdateModal = () => {
+    setUpdateFormData({ ...formData });
+    setShowUpdateModal(true);
+  };
+
+  // Handle inputs inside Update Modal
+  const handleUpdateModalInputChange = (fieldName, value) => {
+    setUpdateFormData((prev) => ({ ...prev, [fieldName]: value }));
+  };
+
+  // Save changes from Update Form Modal — updates formData in DB and regenerates preview in sync
+  const handleSaveUpdateForm = async (e) => {
+    if (e) e.preventDefault();
+    if (!selectedTemplate || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      if (currentDocId) {
+        const res = await axios.put(`/api/documents/${currentDocId}`, {
+          formData: updateFormData,
+          reformat: true,
+          templateId: selectedTemplate.id,
+          language: docLanguage,
+          title: selectedTemplate?.title?.split(' (')[0],
+        });
+
+        if (res.data?.success) {
+          const updatedDoc = res.data.document;
+          const newContent = updatedDoc.generatedContent;
+          const newFormData = updatedDoc.formData || updateFormData;
+
+          // Update both form variables and live preview
+          setFormData(newFormData);
+          setGeneratedDocument(newContent);
+          setOriginalDocument(newContent);
+          setEditableContent(newContent);
+          setIsEditing(false);
+          setShowUpdateModal(false);
+
+          const savedToDb = res.data.savedToDb !== false;
+          setSaveToast({
+            type: 'success',
+            message: savedToDb
+              ? '✅ Document form data & preview updated in database!'
+              : '✅ Document preview updated (memory mode)!'
+          });
+        }
+      } else {
+        // Fallback if currentDocId not yet created
+        const res = await axios.post('/api/documents/generate', {
+          templateId: selectedTemplate.id,
+          formData: updateFormData,
+          userId: user?.id || 'guest_default',
+          language: docLanguage,
+        });
+
+        if (res.data?.success) {
+          const content = res.data.document.generatedContent;
+          setFormData(updateFormData);
+          setGeneratedDocument(content);
+          setOriginalDocument(content);
+          setEditableContent(content);
+          setCurrentDocId(res.data.document._id);
+          setIsEditing(false);
+          setShowUpdateModal(false);
+          setSaveToast({ type: 'success', message: '✅ Document preview updated & saved to database!' });
+        }
+      }
+    } catch (err) {
+      console.error('Error updating document from form data:', err);
+      setSaveToast({
+        type: 'error',
+        message: '⚠️ Failed to update document form data. Please check required fields.'
+      });
+    } finally {
+      setIsSaving(false);
+      setTimeout(() => setSaveToast(null), 4000);
+    }
+  };
+
   // Delete / Clear Draft
   const handleConfirmDelete = async () => {
     if (currentDocId) {
@@ -338,9 +421,9 @@ export const DocumentGenerator = () => {
                   </h3>
                   <p className="template-desc">{selectedTemplate.description}</p>
                 </div>
-                <button 
-                  type="button" 
-                  onClick={handleClearForm} 
+                <button
+                  type="button"
+                  onClick={handleClearForm}
                   className="btn btn-secondary btn-sm"
                   title="Reset form fields"
                 >
@@ -349,7 +432,7 @@ export const DocumentGenerator = () => {
               </div>
 
               {/* Language Selection Selector for Document Output */}
-              <div className="doc-lang-selector-group">
+              {/* <div className="doc-lang-selector-group">
                 <span className="form-label" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <FaGlobe /> Document Language:
                 </span>
@@ -374,7 +457,7 @@ export const DocumentGenerator = () => {
                 >
                   தமிழ் (Tamil)
                 </button>
-              </div>
+              </div> */}
 
               <form onSubmit={handleGenerate} className="doc-fields-form">
                 {selectedTemplate.fields.map((field) => {
@@ -464,21 +547,30 @@ export const DocumentGenerator = () => {
 
               {generatedDocument && (
                 <div className="preview-actions">
-                  {/* EDIT OPTION */}
+                  {/* EDIT & UPDATE OPTIONS */}
                   {!isEditing ? (
-                    <button 
-                      onClick={handleStartEdit} 
-                      className="btn btn-secondary btn-sm" 
-                      title="Edit generated document content"
-                    >
-                      <FaPenToSquare /> Edit Draft
-                    </button>
+                    <>
+                      <button
+                        onClick={handleOpenUpdateModal}
+                        className="btn btn-secondary btn-sm"
+                        title="Open separate form to update document variables and sync preview"
+                      >
+                        <FaFilePen /> Update Form Data
+                      </button>
+                      {/* <button 
+                        onClick={handleStartEdit} 
+                        className="btn btn-secondary btn-sm" 
+                        title="Edit raw generated document content"
+                      >
+                        <FaPenToSquare /> Edit Draft Text
+                      </button> */}
+                    </>
                   ) : (
                     <>
-                      <button 
-                        onClick={handleSaveEdit} 
+                      <button
+                        onClick={handleSaveEdit}
                         disabled={isSaving}
-                        className="btn btn-success btn-sm" 
+                        className="btn btn-success btn-sm"
                         title={isSaving ? 'Saving to database...' : 'Save edits to database'}
                       >
                         {isSaving ? (
@@ -487,16 +579,16 @@ export const DocumentGenerator = () => {
                           <><FaCloudArrowUp /> Save to Database</>
                         )}
                       </button>
-                      <button 
-                        onClick={handleRevertEdit} 
-                        className="btn btn-secondary btn-sm" 
+                      <button
+                        onClick={handleRevertEdit}
+                        className="btn btn-secondary btn-sm"
                         title="Revert back to original generated draft"
                       >
                         <FaRotateLeft /> Revert
                       </button>
-                      <button 
-                        onClick={handleCancelEdit} 
-                        className="btn btn-secondary btn-sm" 
+                      <button
+                        onClick={handleCancelEdit}
+                        className="btn btn-secondary btn-sm"
                         title="Cancel editing"
                       >
                         <FaXmark /> Cancel
@@ -517,9 +609,9 @@ export const DocumentGenerator = () => {
                         <FaPrint /> Export PDF
                       </button>
                       {/* DELETE OPTION */}
-                      <button 
-                        onClick={() => setShowDeleteModal(true)} 
-                        className="btn btn-danger btn-sm" 
+                      <button
+                        onClick={() => setShowDeleteModal(true)}
+                        className="btn btn-danger btn-sm"
                         title="Delete generated draft preview"
                       >
                         <FaTrashCan /> Delete
@@ -572,7 +664,7 @@ export const DocumentGenerator = () => {
           {/* Statutory Verification & Legal Validity Checklist */}
           {selectedTemplate && (
             <div className="legal-verification-card">
-              <div 
+              <div
                 className="verification-header"
                 onClick={() => setShowVerification(!showVerification)}
               >
@@ -638,21 +730,137 @@ export const DocumentGenerator = () => {
               Are you sure you want to delete this generated legal document draft from the preview? The current draft text and any customized edits will be removed. You can generate a fresh draft at any time.
             </p>
             <div className="delete-modal-actions">
-              <button 
-                type="button" 
-                onClick={() => setShowDeleteModal(false)} 
+              <button
+                type="button"
+                onClick={() => setShowDeleteModal(false)}
                 className="btn btn-secondary"
               >
                 Cancel / Keep Draft
               </button>
-              <button 
-                type="button" 
-                onClick={handleConfirmDelete} 
+              <button
+                type="button"
+                onClick={handleConfirmDelete}
                 className="btn btn-danger"
               >
                 <FaTrashCan /> Yes, Delete Draft
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Document Data Update Form Modal */}
+      {showUpdateModal && selectedTemplate && (
+        <div className="doc-modal-backdrop" onClick={() => !isSaving && setShowUpdateModal(false)}>
+          <div className="doc-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="doc-modal-header">
+              <div>
+                <h3>
+                  <FaFilePen style={{ color: '#0d9488' }} /> Update Document Data Form
+                </h3>
+                <p>
+                  Modify the structured variables for <strong>{selectedTemplate.title}</strong>. Saving updates both the database record and re-renders the preview.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="doc-modal-close-btn"
+                onClick={() => !isSaving && setShowUpdateModal(false)}
+                disabled={isSaving}
+                title="Close modal"
+              >
+                <FaXmark />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveUpdateForm} style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+              <div className="doc-modal-body">
+                {selectedTemplate.fields.map((field) => {
+                  const isNicField = field.name.toLowerCase().includes('nic');
+                  const fieldValue = updateFormData[field.name] ?? '';
+                  const hasNicValue = isNicField && String(fieldValue).length > 0;
+                  const isNicValid = hasNicValue ? isValidSriLankanNIC(fieldValue) : null;
+
+                  return (
+                    <div key={field.name} className="form-group">
+                      <div className="form-label-row">
+                        <label className="form-label">
+                          {field.label} {field.required && <span className="req">*</span>}
+                        </label>
+                        {isNicField && hasNicValue && (
+                          <span className={`nic-feedback-badge ${isNicValid ? 'valid' : 'invalid'}`}>
+                            {isNicValid ? (
+                              <><FaCircleCheck /> Valid Sri Lankan NIC</>
+                            ) : (
+                              <><FaTriangleExclamation /> Format: 9 digits+V/X or 12 digits</>
+                            )}
+                          </span>
+                        )}
+                      </div>
+
+                      {field.type === 'select' ? (
+                        <select
+                          value={fieldValue}
+                          onChange={(e) => handleUpdateModalInputChange(field.name, e.target.value)}
+                          required={field.required}
+                          className="form-input form-select"
+                        >
+                          {field.options?.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      ) : field.type === 'textarea' ? (
+                        <textarea
+                          value={fieldValue}
+                          onChange={(e) => handleUpdateModalInputChange(field.name, e.target.value)}
+                          placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}...`}
+                          required={field.required}
+                          className="form-textarea"
+                          rows={4}
+                        />
+                      ) : (
+                        <input
+                          type={field.type}
+                          value={fieldValue}
+                          onChange={(e) => handleUpdateModalInputChange(field.name, e.target.value)}
+                          placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}...`}
+                          required={field.required}
+                          className="form-input"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="doc-modal-footer">
+                <div className="doc-modal-footer-info">
+                  <FaShieldHalved /> Updates database variables &amp; re-generates statutory preview in sync
+                </div>
+                <div className="doc-modal-footer-actions">
+                  <button
+                    type="button"
+                    onClick={() => setShowUpdateModal(false)}
+                    disabled={isSaving}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSaving}
+                    className="btn btn-primary btn-sm"
+                  >
+                    {isSaving ? (
+                      <><FaSpinner className="spin-icon" /> Saving &amp; Updating...</>
+                    ) : (
+                      <><FaFloppyDisk /> Save &amp; Update Preview</>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       )}
